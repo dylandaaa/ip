@@ -11,15 +11,18 @@ public class Message {
         StringBuilder message = new StringBuilder();
         message.append("       ____________________________________________________________\n");
         for (int i = 0; i < counter; i++) {
-            message.append((i + 1))
-                    .append(list[i]);
+            message.append("        ")
+                    .append((i + 1))
+                    .append(".")
+                    .append(list[i])
+                    .append("\n");
         }
         return message.toString();
     }
 
     public static String addMessage(String input) {
-        return "        ____________________________________________________________\n" +
-                "       " + input + "\n" +
+        return "       ____________________________________________________________\n" +
+                "       added: " + input + "\n" +
                 "       ____________________________________________________________\n";
     }
 }

@@ -6,7 +6,6 @@ public class Wheezy {
         Task[] list = new Task[100];
         int counter = 0;
 
-        String input = "";
         String logo = """
                          __      __.__                                \s
                         /  \\    /  \\  |__   ____   ____ ___________.__.
@@ -19,16 +18,38 @@ public class Wheezy {
         System.out.println("        What can I do for you?");
         System.out.println("        ____________________________________________________________\n");
 
-        while (!input.equals("bye")) {
-            input = scanner.nextLine();
-            if (input.contains("mark")) {
+        while (true) {
+            String input = scanner.nextLine();
+            CommandType commandType = CommandParser.parseCommand(input);
 
-            }
-            if (!input.equals("list")) {
-                list[counter] = new Task(input);
-                counter++;
+            switch (commandType) {
+                case BYE -> {
+                    System.out.println(Message.byeMessage());
+                    break;
+                }
+                case LIST -> {
+                    System.out.println(Message.listMessage(list, counter));
+                }
+                case MARK -> {
+                    CommandHandler.handleMark(input, list, counter, true);
+                }
+                case UNMARK -> {
+                    CommandHandler.handleMark(input, list, counter, false);
+                }
+                case ADD_TASK -> {
+                    CommandHandler.handleAdd(input, list, counter);
+                    counter++;
+                }
+                case INVALID -> {
+                    System.out.println("        ____________________________________________________________");
+                    System.out.println("        Invalid Command");
+                    System.out.println("        ____________________________________________________________");
+                }
             }
 
+            if (commandType == CommandType.BYE) {
+                break;
+            }
         }
     }
 }
