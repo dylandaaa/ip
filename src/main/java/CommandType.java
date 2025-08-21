@@ -1,4 +1,3 @@
 public enum CommandType {
-    ADD_Task, LIST, MARK, UNMARK, BYE, INVALID
+    ADD_TASK, LIST, MARK, UNMARK, BYE, INVALID
 }
-
