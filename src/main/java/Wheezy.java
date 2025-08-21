@@ -37,6 +37,9 @@ public class Wheezy {
                     CommandHandler.handleMark(input, list, counter, false);
                 }
                 case ADD_TASK -> {
+                    if (counter >= 100) {
+                        printError("Oops! Your task list is full. Cannot add more tasks.");
+                    }
                     counter++;
                     CommandHandler.handleAdd(input, list, counter);
                 }
