@@ -22,9 +22,25 @@ public class CommandHandler {
 
     public static void handleAdd(String input, Task[] list, int counter) {
         Task newTask = new Task(input);
-        list[counter] = newTask;
+        list[counter - 1] = newTask;
         System.out.println(Message.addMessage(input, newTask, counter));
     }
 
+    public static void handleTodo(String input, Task[] list, int counter) {
+        Task newTask = new Todo(input);
+        list[counter - 1] = newTask;
+        System.out.println(Message.addMessage(input, newTask, counter));
+    }
 
+    public static void handleDeadline(String input, Task[] list, int counter, String deadline) {
+        Task newTask = new Deadline(input, deadline);
+        list[counter - 1] = newTask;
+        System.out.println(Message.addMessage(input, newTask, counter));
+    }
+
+    public static void handleEvent(String input, Task[] list, int counter, String from, String until) {
+        Task newTask = new Event(input, from, until);
+        list[counter - 1] = newTask;
+        System.out.println(Message.addMessage(input, newTask, counter));
+    }
 }

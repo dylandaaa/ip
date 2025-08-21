@@ -37,17 +37,26 @@ public class Wheezy {
                     CommandHandler.handleMark(input, list, counter, false);
                 }
                 case ADD_TASK -> {
-                    CommandHandler.handleAdd(input, list, counter);
                     counter++;
+                    CommandHandler.handleAdd(input, list, counter);
                 }
                 case TODO -> {
-
+                    counter++;
+                    String description = CommandParser.extractTodoDescription(input);
+                    CommandHandler.handleTodo(description, list, counter);
                 }
                 case DEADLINE -> {
-
+                    counter++;
+                    String description = CommandParser.extractDeadlineDescription(input);
+                    String deadline = CommandParser.extractDeadlineDate(input);
+                    CommandHandler.handleDeadline(description, list, counter, deadline);
                 }
                 case EVENT -> {
-
+                    counter++;
+                    String description = CommandParser.extractEventDescription(input);
+                    String from = CommandParser.extractEventStartTime(input);
+                    String until = CommandParser.extractEventEndTime(input);
+                    CommandHandler.handleEvent(description, list, counter, from, until);
                 }
                 case INVALID -> {
                     System.out.println("        ____________________________________________________________");

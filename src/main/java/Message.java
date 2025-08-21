@@ -22,7 +22,7 @@ public class Message {
 
     public static String addMessage(String input, Task task, int counter) {
         return "       ____________________________________________________________\n" +
-                "       Great! I've added this task:" +
+                "       Great! I've added this task:\n" +
                 "       " + task + "\n" +
                 "       Now you have " + counter + " tasks in the list\n" +
                 "       ____________________________________________________________\n";
