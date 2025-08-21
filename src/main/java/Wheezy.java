@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Wheezy {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String[] list = new String[100];
+        Task[] list = new Task[100];
         int counter = 0;
 
         String input = "";
@@ -21,11 +21,14 @@ public class Wheezy {
 
         while (!input.equals("bye")) {
             input = scanner.nextLine();
+            if (input.contains("mark")) {
+
+            }
             if (!input.equals("list")) {
-                list[counter] = input;
+                list[counter] = new Task(input);
                 counter++;
             }
-            System.out.println(Message.sendMessage(input, list, counter));
+
         }
     }
 }

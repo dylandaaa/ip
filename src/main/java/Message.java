@@ -1,5 +1,5 @@
 public class Message {
-    public static String sendMessage(String input, String[] list, int counter) {
+    public static String sendMessage(String input, Task[] list, int counter) {
         if (input.equals("bye")) {
             return """
                             ____________________________________________________________
@@ -20,7 +20,6 @@ public class Message {
                         .append("\n");
             }
             message.append("       ____________________________________________________________\n");
-
             return message.toString();
         }
     }
