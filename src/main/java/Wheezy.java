@@ -40,32 +40,33 @@ public class Wheezy {
                     case ADD_TASK -> {
                         if (counter >= 100) {
                             ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
+                        } else {
+                            counter++;
+                            CommandHandler.handleAdd(input, list, counter);
                         }
-                        counter++;
-                        CommandHandler.handleAdd(input, list, counter);
                     }
                     case TODO -> {
                         if (counter >= 100) {
                             ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
                         } else {
-                            CommandHandler.handleTodoWithErrorCheck(input, list, counter);
                             counter++;
+                            CommandHandler.handleTodoWithErrorCheck(input, list, counter);
                         }
                     }
                     case DEADLINE -> {
                         if (counter >= 100) {
                             ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
                         } else {
-                            CommandHandler.handleDeadlineWithErrorCheck(input, list, counter);
                             counter++;
+                            CommandHandler.handleDeadlineWithErrorCheck(input, list, counter);
                         }
                     }
                     case EVENT -> {
                         if (counter >= 100) {
                             ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
                         } else {
-                            CommandHandler.handleEventWithErrorCheck(input, list, counter);
                             counter++;
+                            CommandHandler.handleEventWithErrorCheck(input, list, counter);
                         }
                     }
                     case INVALID -> {
@@ -77,6 +78,7 @@ public class Wheezy {
                 if (commandType == CommandType.BYE) {
                     break;
                 }
+
             } catch (Exception e) {
                 ErrorHandler.printError("Something went wrong! Please try again");
             }
