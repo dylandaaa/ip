@@ -15,7 +15,7 @@ public class Wheezy {
         System.out.println("        ____________________________________________________________");
         System.out.println("        Hello I'm\n" + logo);
         System.out.println("        What can I do for you?");
-        System.out.println("        ____________________________________________________________\nlis");
+        System.out.println("        ____________________________________________________________\n");
 
         while (!input.equals("bye")) {
             input = scanner.nextLine();
