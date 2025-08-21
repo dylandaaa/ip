@@ -13,7 +13,7 @@ public class CommandParser {
 
     public static int extractTaskNumber(String input) throws NumberFormatException {
         String[] parts = input.split(" ");
-        if (parts.length == != 2) throw new NumberFormatException("Invalid Format");
+        if (parts.length != 2) throw new NumberFormatException("Invalid Format");
         return Integer.parseInt(parts[1]) - 1;
     }
 }
