@@ -19,4 +19,59 @@ public class CommandParser {
         if (parts.length != 2) throw new NumberFormatException("Invalid Format");
         return Integer.parseInt(parts[1]) - 1;
     }
+
+    public static String extractTodoDescription(String input) {
+        return input.substring(5).trim();
+    }
+
+    public static String extractDeadlineDescription(String input) {
+        String withoutCommand = input.substring(9).trim();
+        int byIndex = withoutCommand.indexOf("/by ");
+        if (byIndex == -1) {
+            throw new IllegalArgumentException("Deadline format should be: deadline <description> /by <date>");
+        }
+        return withoutCommand.substring(0, byIndex).trim();
+    }
+
+    public static String extractDeadlineDate(String input) {
+        String withoutCommand = input.substring(9).trim();
+        int byIndex = withoutCommand.indexOf("/by ");
+        if (byIndex == -1) {
+            throw new IllegalArgumentException("Deadline format should be: deadline <description> /by <date>");
+        }
+        return withoutCommand.substring(byIndex + 4).trim(); // Get everything after "/by "
+    }
+
+    public static String extractEventDescription(String input) {
+        String withoutCommand = input.substring(6).trim();
+        int fromIndex = withoutCommand.indexOf("/from ");
+        if (fromIndex == -1) {
+            throw new IllegalArgumentException("Event format should be: event <description> /from <start> /to <end>");
+        }
+        return withoutCommand.substring(0, fromIndex).trim();
+    }
+
+    public static String extractEventStartTime(String input) {
+        String withoutCommand = input.substring(6).trim();
+        int fromIndex = withoutCommand.indexOf("/from ");
+        int toIndex = withoutCommand.indexOf("/to ");
+
+        if (fromIndex == -1 || toIndex == -1) {
+            throw new IllegalArgumentException("Event format should be: event <description> /from <start> /to <end>");
+        }
+
+        return withoutCommand.substring(fromIndex + 6, toIndex).trim();
+    }
+
+    public static String extractEventEndTime(String input) {
+        String withoutCommand = input.substring(6).trim();
+        int toIndex = withoutCommand.indexOf("/to ");
+
+        if (toIndex == -1) {
+            throw new IllegalArgumentException("Event format should be: event <description> /from <start> /to <end>");
+        }
+
+        return withoutCommand.substring(toIndex + 4).trim();
+    }
+
 }
