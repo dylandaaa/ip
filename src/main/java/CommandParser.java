@@ -10,4 +10,10 @@ public class CommandParser {
 
         return CommandType.ADD_TASK;
     }
+
+    public static int extractTaskNumber(String input) throws NumberFormatException {
+        String[] parts = input.split(" ");
+        if (parts.length == != 2) throw new NumberFormatException("Invalid Format");
+        return Integer.parseInt(parts[1]) - 1;
+    }
 }
