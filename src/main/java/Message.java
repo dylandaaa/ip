@@ -27,4 +27,12 @@ public class Message {
                 "       Now you have " + counter + " tasks in the list\n" +
                 "       ____________________________________________________________\n";
     }
+
+    public static String deleteMessage(Task deletedTask, int totalTasks) {
+        return "        ____________________________________________________________\n" +
+                "        Alrighty, I've removed this task:\n" +
+                "          " + deletedTask + "\n" +
+                "        Now you have " + totalTasks + " task(s) in the list.\n" +
+                "        ____________________________________________________________\n";
+    }
 }
