@@ -9,6 +9,7 @@ public class CommandParser {
         if (command.startsWith("todo ")) return CommandType.TODO;
         if (command.startsWith("event ")) return CommandType.EVENT;
         if (command.startsWith("deadline ")) return CommandType.DEADLINE;
+        if (command.startsWith("delete ")) return CommandType.DELETE;
         if (command.trim().isEmpty()) return CommandType.INVALID;
 
         return CommandType.ADD_TASK;
