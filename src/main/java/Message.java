@@ -20,7 +20,7 @@ public class Message {
         return message.toString();
     }
 
-    public static String addMessage(String input, Task task, int counter) {
+    public static String addMessage(Task task, int counter) {
         return "       ____________________________________________________________\n" +
                 "       Great! I've added this task:\n" +
                 "       " + task + "\n" +
