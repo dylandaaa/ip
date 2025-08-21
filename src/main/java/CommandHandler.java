@@ -1,22 +1,36 @@
 public class CommandHandler {
     public static void handleMark(String input, Task[] list, int counter, boolean markAsDone) {
-        int taskNumber = CommandParser.extractTaskNumber(input);
-        if (taskNumber >= 0 && taskNumber < counter) {
+        try {
+            int taskNumber = CommandParser.extractTaskNumber(input);
+
+            if (counter == 0) {
+                ErrorHandler.printError("Your task list is empty! Add some tasks first.");
+                return;
+            }
+
+            if (taskNumber < 0 || taskNumber >= counter) {
+                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + counter + " task(s).");
+                return;
+            }
+
             if (markAsDone) {
                 list[taskNumber].markDone();
             } else {
                 list[taskNumber].unmarkDone();
             }
 
-            String action = markAsDone ? "done" : "not done yet";
+            String action = markAsDone ? " done" : " not done yet";
             System.out.println("        ____________________________________________________________");
-            System.out.println("        Okay, I've marked this task as" + action);
-            System.out.println("        " + list[taskNumber]);
+            System.out.println("        Okay, I've marked this task as" + action + ":");
+            System.out.println("          " + list[taskNumber]);
             System.out.println("        ____________________________________________________________");
-        } else {
-            System.out.println("        ____________________________________________________________");
-            System.out.println("        Invalid Task Number");
-            System.out.println("        ____________________________________________________________");
+
+        } catch (NumberFormatException e) {
+            String command = markAsDone ? "mark" : "unmark";
+            ErrorHandler.printError("Invalid task number! Usage: " + command + " <task_number>");
+        } catch (StringIndexOutOfBoundsException e) {
+            String command = markAsDone ? "mark" : "unmark";
+            ErrorHandler.printError("Please provide a task number! Usage: " + command + " <task_number>");
         }
     }
 
