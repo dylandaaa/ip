@@ -34,7 +34,7 @@ public class CommandHandler {
         }
     }
 
-    private static void handleTodoWithErrorCheck(String input, Task[] list, int counter) {
+    public static void handleTodoWithErrorCheck(String input, Task[] list, int counter) {
         try {
             String description = CommandParser.extractTodoDescription(input);
             if (description.trim().isEmpty()) {
@@ -47,7 +47,7 @@ public class CommandHandler {
         }
     }
 
-    private static void handleDeadlineWithErrorCheck(String input, Task[] list, int counter) {
+    public static void handleDeadlineWithErrorCheck(String input, Task[] list, int counter) {
         try {
             String description = CommandParser.extractDeadlineDescription(input);
             String deadline = CommandParser.extractDeadlineDate(input);
@@ -69,7 +69,7 @@ public class CommandHandler {
         }
     }
 
-    private static void handleEventWithErrorCheck(String input, Task[] list, int counter) {
+    public static void handleEventWithErrorCheck(String input, Task[] list, int counter) {
         try {
             String description = CommandParser.extractEventDescription(input);
             String from = CommandParser.extractEventStartTime(input);
@@ -97,6 +97,11 @@ public class CommandHandler {
     }
 
     public static void handleAdd(String input, Task[] list, int counter) {
+        if (input.trim().isEmpty()) {
+            ErrorHandler.printError("Task description cannot be empty!");
+            return;
+        }
+
         Task newTask = new Task(input);
         list[counter - 1] = newTask;
         System.out.println(Message.addMessage(input, newTask, counter));

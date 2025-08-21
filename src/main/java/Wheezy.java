@@ -47,26 +47,26 @@ public class Wheezy {
                     case TODO -> {
                         if (counter >= 100) {
                             ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
+                        } else {
+                            CommandHandler.handleTodoWithErrorCheck(input, list, counter);
+                            counter++;
                         }
-                        counter++;
-                        String description = CommandParser.extractTodoDescription(input);
-                        CommandHandler.handleTodo(description, list, counter);
                     }
                     case DEADLINE -> {
                         if (counter >= 100) {
                             ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
+                        } else {
+                            CommandHandler.handleDeadlineWithErrorCheck(input, list, counter);
+                            counter++;
                         }
-                        counter++;
-                        String description = CommandParser.extractDeadlineDescription(input);
-                        String deadline = CommandParser.extractDeadlineDate(input);
-                        CommandHandler.handleDeadline(description, list, counter, deadline);
                     }
                     case EVENT -> {
-                        counter++;
-                        String description = CommandParser.extractEventDescription(input);
-                        String from = CommandParser.extractEventStartTime(input);
-                        String until = CommandParser.extractEventEndTime(input);
-                        CommandHandler.handleEvent(description, list, counter, from, until);
+                        if (counter >= 100) {
+                            ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
+                        } else {
+                            CommandHandler.handleEventWithErrorCheck(input, list, counter);
+                            counter++;
+                        }
                     }
                     case INVALID -> {
                         ErrorHandler.printError("I don't understand that command. Try 'list', 'todo <description>', or 'bye'.");
