@@ -124,4 +124,26 @@ public class CommandHandler {
         list[counter - 1] = newTask;
         System.out.println(Message.addMessage(input, newTask, counter));
     }
+
+    public static void handleDelete(String input, ArrayList<Task> taskList) {
+        try {
+            int taskNumber = CommandParser.extractTaskNumber(input);
+
+            if (taskList.isEmpty()) {
+                ErrorHandler.printError("Your task list is empty! Nothing to delete.");
+                return;
+            }
+
+            if (taskNumber < 0 || taskNumber >= taskList.size()) {
+                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + taskList.size() + " task(s).");
+                return;
+            }
+
+            Task deletedTask = taskList.remove(taskNumber);
+            System.out.println(Message.deleteMessage(deletedTask, taskList.size()));
+
+        } catch (NumberFormatException e) {
+            ErrorHandler.printError("Invalid task number! Usage: delete <task_number>");
+        }
+    }
 }
