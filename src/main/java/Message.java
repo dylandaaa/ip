@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Message {
     public static String byeMessage() {
         return """
@@ -7,16 +9,24 @@ public class Message {
                     """;
     }
 
-    public static String listMessage(Task[] list, int counter) {
+    public static String listMessage(ArrayList<Task> taskList) {
         StringBuilder message = new StringBuilder();
         message.append("       ____________________________________________________________\n");
-        for (int i = 0; i < counter; i++) {
-            message.append("        ")
-                    .append((i + 1))
-                    .append(".")
-                    .append(list[i])
-                    .append("\n");
+
+        if (taskList.isEmpty()) {  // Use .isEmpty() instead of counter check
+            message.append("        Your task list is empty! Add some tasks to get started.\n");
+        } else {
+            message.append("        Here are the tasks in your list:\n");
+            for (int i = 0; i < taskList.size(); i++) {
+                message.append("        ")
+                        .append((i + 1))
+                        .append(".")
+                        .append(taskList.get(i))
+                        .append("\n");
+            }
         }
+
+        message.append("       ____________________________________________________________\n");
         return message.toString();
     }
 

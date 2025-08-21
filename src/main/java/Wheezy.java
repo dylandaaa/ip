@@ -1,22 +1,12 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Wheezy {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Task[] list = new Task[100];
-        int counter = 0;
+        ArrayList<Task> taskList = new ArrayList<>();
 
-        String logo = """
-                         __      __.__                                \s
-                        /  \\    /  \\  |__   ____   ____ ___________.__.
-                        \\   \\/\\/   /  |  \\_/ __ \\_/ __ \\\\___   |   |  |
-                         \\        /|   Y  \\  ___/\\  ___/ /    /_\\___  |
-                          \\__/\\__/ |___|__/\\____/ \\____/ |_____| /____|
-                """;
-        System.out.println("        ____________________________________________________________");
-        System.out.println("        Hello I'm\n" + logo);
-        System.out.println("        What can I do for you?");
-        System.out.println("        ____________________________________________________________\n");
+        printWelcome();
 
         while (true) {
             try {
@@ -29,59 +19,55 @@ public class Wheezy {
                         break;
                     }
                     case LIST -> {
-                        System.out.println(Message.listMessage(list, counter));
+                        System.out.println(Message.listMessage(taskList));
                     }
                     case MARK -> {
-                        CommandHandler.handleMark(input, list, counter, true);
+                        CommandHandler.handleMark(input, taskList, true);
                     }
                     case UNMARK -> {
-                        CommandHandler.handleMark(input, list, counter, false);
+                        CommandHandler.handleMark(input, taskList, false);
+                    }
+                    case DELETE -> {  // New delete case
+                        CommandHandler.handleDelete(input, taskList);
                     }
                     case ADD_TASK -> {
-                        if (counter >= 100) {
-                            ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
-                        } else {
-                            counter++;
-                            CommandHandler.handleAdd(input, list, counter);
-                        }
+                        CommandHandler.handleAdd(input, taskList);
                     }
                     case TODO -> {
-                        if (counter >= 100) {
-                            ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
-                        } else {
-                            counter++;
-                            CommandHandler.handleTodoWithErrorCheck(input, list, counter);
-                        }
+                        CommandHandler.handleTodoWithErrorCheck(input, taskList);
                     }
                     case DEADLINE -> {
-                        if (counter >= 100) {
-                            ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
-                        } else {
-                            counter++;
-                            CommandHandler.handleDeadlineWithErrorCheck(input, list, counter);
-                        }
+                        CommandHandler.handleDeadlineWithErrorCheck(input, taskList);
                     }
                     case EVENT -> {
-                        if (counter >= 100) {
-                            ErrorHandler.printError("Oops! Your task list is full. Cannot add more tasks.");
-                        } else {
-                            counter++;
-                            CommandHandler.handleEventWithErrorCheck(input, list, counter);
-                        }
+                        CommandHandler.handleEventWithErrorCheck(input, taskList);
                     }
                     case INVALID -> {
-                        ErrorHandler.printError("I don't understand that command. Try 'list', 'todo <description>', or 'bye'.");
+                        ErrorHandler.printError("I don't understand that command. Try 'list', 'todo <description>', 'delete <number>', or 'bye'.");
                     }
-
                 }
 
                 if (commandType == CommandType.BYE) {
                     break;
                 }
-
             } catch (Exception e) {
                 ErrorHandler.printError("Something went wrong! Please try again");
+                // e.printStackTrace(); // Uncomment for debugging
             }
         }
+    }
+
+    private static void printWelcome() {
+        String logo = """
+                         __      __..__                                 \s
+                        /  \\    /  \\  |__   ____   ____ __________.__.
+                        \\   \\/\\/   /  |  \\_/ __ \\_/ __ \\\\____ |   |  |
+                         \\        /|   Y  \\  ___/\\  ___/ /    /\\___  |
+                          \\__/\\__/ |___|__/\\____/ \\____/ |____| /____|
+                """;
+        System.out.println("        __________________________________________________________");
+        System.out.println("        Hello I'm\n" + logo);
+        System.out.println("        What can I do for you?");
+        System.out.println("        __________________________________________________________\n");
     }
 }
