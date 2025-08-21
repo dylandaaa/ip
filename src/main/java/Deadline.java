@@ -1,13 +1,17 @@
 public class Deadline extends Task {
-    String deadline;
+    private String deadline;
 
     public Deadline(String input, String deadline) {
         super(input);
         this.deadline = deadline;
     }
 
+    public String getDeadline() {
+        return this.deadline;
+    }
+
     @Override
     public String toString() {
-        return "[D]" + super.toString() + "(by: Sunday)";
+        return "[D]" + super.toString() + " (by: Sunday)";
     }
 }
