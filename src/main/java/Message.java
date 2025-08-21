@@ -6,13 +6,13 @@ public class Message {
                             Bye, see you around!
                             ____________________________________________________________
                     """;
-        }
-        else if (!input.equals("list")) {
+        } else if (!input.equals("list")) {
             return "       ____________________________________________________________\n" +
                     "       added: " + input + "\n" +
                     "       ____________________________________________________________\n";
         } else {
             StringBuilder message = new StringBuilder("       ____________________________________________________________\n");
+
             for (int i = 0; i < counter; i++) {
                 message.append((i + 1))
                         .append(". ")
@@ -20,6 +20,7 @@ public class Message {
                         .append("\n");
             }
             message.append("       ____________________________________________________________\n");
+
             return message.toString();
         }
     }
