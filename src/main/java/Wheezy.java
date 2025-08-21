@@ -40,6 +40,15 @@ public class Wheezy {
                     CommandHandler.handleAdd(input, list, counter);
                     counter++;
                 }
+                case TODO -> {
+
+                }
+                case DEADLINE -> {
+
+                }
+                case EVENT -> {
+
+                }
                 case INVALID -> {
                     System.out.println("        ____________________________________________________________");
                     System.out.println("        Invalid Command");

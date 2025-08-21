@@ -20,9 +20,11 @@ public class Message {
         return message.toString();
     }
 
-    public static String addMessage(String input) {
+    public static String addMessage(String input, Task task, int counter) {
         return "       ____________________________________________________________\n" +
-                "       added: " + input + "\n" +
+                "       Great! I've added this task:" +
+                "       " + task + "\n" +
+                "       Now you have " + counter + " tasks in the list\n" +
                 "       ____________________________________________________________\n";
     }
 }

@@ -6,6 +6,9 @@ public class CommandParser {
         if (command.equals("list")) return CommandType.LIST;
         if (command.startsWith("mark ")) return CommandType.MARK;
         if (command.startsWith("unmark ")) return CommandType.UNMARK;
+        if (command.startsWith("todo ")) return CommandType.TODO;
+        if (command.startsWith("event ")) return CommandType.EVENT;
+        if (command.startsWith("deadline ")) return CommandType.DEADLINE;
         if (command.trim().isEmpty()) return CommandType.INVALID;
 
         return CommandType.ADD_TASK;

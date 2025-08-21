@@ -21,7 +21,10 @@ public class CommandHandler {
     }
 
     public static void handleAdd(String input, Task[] list, int counter) {
-        list[counter] = new Task(input);
-        System.out.println(Message.addMessage(input));
+        Task newTask = new Task(input);
+        list[counter] = newTask;
+        System.out.println(Message.addMessage(input, newTask, counter));
     }
+
+
 }
