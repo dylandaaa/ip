@@ -20,6 +20,68 @@ public class CommandHandler {
         }
     }
 
+    private static void handleTodoWithErrorCheck(String input, Task[] list, int counter) {
+        try {
+            String description = CommandParser.extractTodoDescription(input);
+            if (description.trim().isEmpty()) {
+                ErrorHandler.printError("Todo description cannot be empty! Usage: todo <description>");
+                return;
+            }
+            CommandHandler.handleTodo(description, list, counter);
+        } catch (StringIndexOutOfBoundsException e) {
+            ErrorHandler.printError("Todo description is missing! Usage: todo <description>");
+        }
+    }
+
+    private static void handleDeadlineWithErrorCheck(String input, Task[] list, int counter) {
+        try {
+            String description = CommandParser.extractDeadlineDescription(input);
+            String deadline = CommandParser.extractDeadlineDate(input);
+
+            if (description.trim().isEmpty()) {
+                ErrorHandler.printError("Deadline description cannot be empty! Usage: deadline <description> /by <date>");
+                return;
+            }
+            if (deadline.trim().isEmpty()) {
+                ErrorHandler.printError("Deadline date cannot be empty! Usage: deadline <description> /by <date>");
+                return;
+            }
+
+            CommandHandler.handleDeadline(description, list, counter, deadline);
+        } catch (IllegalArgumentException e) {
+            ErrorHandler.printError("Invalid deadline format! Usage: deadline <description> /by <date>");
+        } catch (StringIndexOutOfBoundsException e) {
+            ErrorHandler.printError("Deadline command is incomplete! Usage: deadline <description> /by <date>");
+        }
+    }
+
+    private static void handleEventWithErrorCheck(String input, Task[] list, int counter) {
+        try {
+            String description = CommandParser.extractEventDescription(input);
+            String from = CommandParser.extractEventStartTime(input);
+            String until = CommandParser.extractEventEndTime(input);
+
+            if (description.trim().isEmpty()) {
+                ErrorHandler.printError("Event description cannot be empty! Usage: event <description> /from <start> /to <end>");
+                return;
+            }
+            if (from.trim().isEmpty()) {
+                ErrorHandler.printError("Event start time cannot be empty! Usage: event <description> /from <start> /to <end>");
+                return;
+            }
+            if (until.trim().isEmpty()) {
+                ErrorHandler.printError("Event end time cannot be empty! Usage: event <description> /from <start> /to <end>");
+                return;
+            }
+
+            CommandHandler.handleEvent(description, list, counter, from, until);
+        } catch (IllegalArgumentException e) {
+            ErrorHandler.printError("Invalid event format! Usage: event <description> /from <start> /to <end>");
+        } catch (StringIndexOutOfBoundsException e) {
+            ErrorHandler.printError("Event command is incomplete! Usage: event <description> /from <start> /to <end>");
+        }
+    }
+
     public static void handleAdd(String input, Task[] list, int counter) {
         Task newTask = new Task(input);
         list[counter - 1] = newTask;
