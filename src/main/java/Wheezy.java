@@ -27,7 +27,7 @@ public class Wheezy {
                     case UNMARK -> {
                         CommandHandler.handleMark(input, taskList, false);
                     }
-                    case DELETE -> {  // New delete case
+                    case DELETE -> {
                         CommandHandler.handleDelete(input, taskList);
                     }
                     case ADD_TASK -> {
@@ -52,7 +52,6 @@ public class Wheezy {
                 }
             } catch (Exception e) {
                 ErrorHandler.printError("Something went wrong! Please try again");
-                // e.printStackTrace(); // Uncomment for debugging
             }
         }
     }
