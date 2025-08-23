@@ -1,0 +1,10 @@
+todo read book
+event burger party /from today 4pm /to tonight
+deadline eat burger /by tonight
+list
+mark 1
+mark 2
+list
+unmark 2
+unmark 3
+bye
