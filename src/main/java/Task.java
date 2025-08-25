@@ -1,6 +1,6 @@
 public class Task {
-    String description;
-    boolean isDone = false;
+    private String description;
+    private boolean isDone = false;
 
     public Task(String description) {
         this.description = description;
@@ -13,6 +13,18 @@ public class Task {
     public void unmarkDone() {
         this.isDone = false;
     }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public boolean getDoneStatus() {
+        return this.isDone;
+    }
+
+    abstract public String getType();
+
+    abstract public String toFileString();
 
     @Override
     public String toString() {

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CommandHandler {
@@ -18,8 +19,18 @@ public class CommandHandler {
             Task task = taskList.get(taskNumber);
             if (markAsDone) {
                 task.markDone();
+                try {
+                    FileHandler.fileMark(taskNumber, true);
+                } catch (IOException ioe) {
+                    System.out.println("An IO Exception occurred: " + ioe.getMessage());
+                }
             } else {
                 task.unmarkDone();
+                try {
+                    FileHandler.fileMark(taskNumber, false);
+                } catch (IOException ioe) {
+                    System.out.println("An IO Exception occurred: " + ioe.getMessage());
+                }
             }
 
             String action = markAsDone ? " done" : " not done yet";
@@ -49,6 +60,11 @@ public class CommandHandler {
             }
 
             Task deletedTask = taskList.remove(taskNumber);
+            try {
+                FileHandler.fileDelete(taskNumber);
+            } catch (IOException ioe) {
+                System.out.println("An IO Exception occurred: " + ioe.getMessage());
+            }
             System.out.println(Message.deleteMessage(deletedTask, taskList.size()));
 
         } catch (NumberFormatException e) {
@@ -62,8 +78,13 @@ public class CommandHandler {
             return;
         }
 
-        Task newTask = new Task(input);
+        Task newTask = new Todo(input);
         taskList.add(newTask);
+        try {
+            FileHandler.fileAdd(newTask);
+        } catch (IOException ioe) {
+            System.out.println("An IO Exception occurred: " + ioe.getMessage());
+        }
         System.out.println(Message.addMessage(newTask, taskList.size()));
     }
 
@@ -77,6 +98,11 @@ public class CommandHandler {
 
             Task newTask = new Todo(description);
             taskList.add(newTask);
+            try {
+                FileHandler.fileAdd(newTask);
+            } catch (IOException ioe) {
+                System.out.println("An IO Exception occurred: " + ioe.getMessage());
+            }
             System.out.println(Message.addMessage(newTask, taskList.size()));
         } catch (StringIndexOutOfBoundsException e) {
             ErrorHandler.printError("Todo description is missing! Usage: todo <description>");
@@ -99,6 +125,11 @@ public class CommandHandler {
 
             Task newTask = new Deadline(description, deadline);
             taskList.add(newTask);
+            try {
+                FileHandler.fileAdd(newTask);
+            } catch (IOException ioe) {
+                System.out.println("An IO Exception occurred: " + ioe.getMessage());
+            }
             System.out.println(Message.addMessage(newTask, taskList.size()));
         } catch (IllegalArgumentException e) {
             ErrorHandler.printError("Invalid deadline format! Usage: deadline <description> /by <date>");
@@ -128,6 +159,11 @@ public class CommandHandler {
 
             Task newTask = new Event(description, from, until);
             taskList.add(newTask);
+            try {
+                FileHandler.fileAdd(newTask);
+            } catch (IOException ioe) {
+                System.out.println("An IO Exception occurred: " + ioe.getMessage());
+            }
             System.out.println(Message.addMessage(newTask, taskList.size()));
         } catch (IllegalArgumentException e) {
             ErrorHandler.printError("Invalid event format! Usage: event <description> /from <start> /to <end>");

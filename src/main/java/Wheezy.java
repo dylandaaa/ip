@@ -1,5 +1,7 @@
-import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Wheezy {
     public static void main(String[] args) {
@@ -7,6 +9,17 @@ public class Wheezy {
         ArrayList<Task> taskList = new ArrayList<>();
 
         printWelcome();
+
+        try {
+            taskList = FileHandler.loadContent(taskList);
+        } catch (FileNotFoundException e) {
+            System.out.println("No previous tasks found!");
+            try {
+                FileHandler.createDirectory();
+            } catch (IOException ioe) {
+                System.out.println("Unable to create file");
+            }
+        }
 
         while (true) {
             try {
