@@ -17,16 +17,15 @@ public class FileHandler {
     }
 
     public static ArrayList<Task> loadContent(ArrayList<Task> taskList) throws FileNotFoundException {
-        // reads and returns the taskList from the ./data/wheezy.txt file
-            File f = new File("data/wheezy.txt");
-            Scanner scanner = new Scanner(f);
+        File f = new File("data/wheezy.txt");
+        Scanner scanner = new Scanner(f);
 
-            while (scanner.hasNext()) {
-                Task newTask = fileContentParser(scanner.nextLine());
-                taskList.add(newTask);
-            }
+        while (scanner.hasNext()) {
+            Task newTask = fileContentParser(scanner.nextLine());
+            taskList.add(newTask);
+        }
 
-            return taskList;
+        return taskList;
     }
 
     public static void fileMark(int taskNumber, boolean isDone) throws IOException {
@@ -59,7 +58,7 @@ public class FileHandler {
 
     public static void fileAdd(Task task) throws IOException {
         FileWriter fw = new FileWriter("data/wheezy.txt", true);
-        fw.write(task.toFileString());
+        fw.write(task.toFileString() + "\n");
         fw.close();
     }
 
