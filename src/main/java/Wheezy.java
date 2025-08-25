@@ -6,16 +6,16 @@ import java.util.Scanner;
 public class Wheezy {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> taskList = new ArrayList<>();
-
-        printWelcome();
+        ArrayList<Task> tempList = new ArrayList<>();
+        Ui ui = new Ui();
+        TaskList taskList = new TaskList(tempList);
 
         try {
-            taskList = FileHandler.loadContent(taskList);
+            taskList = Storage.loadContent(taskList);
         } catch (FileNotFoundException e) {
             System.out.println("No previous tasks found!");
             try {
-                FileHandler.createDirectory();
+                Storage.createDirectory();
             } catch (IOException ioe) {
                 System.out.println("Unable to create file");
             }
@@ -24,36 +24,36 @@ public class Wheezy {
         while (true) {
             try {
                 String input = scanner.nextLine();
-                CommandType commandType = CommandParser.parseCommand(input);
+                CommandType commandType = Parser.parseCommand(input);
 
                 switch (commandType) {
                 case BYE -> {
-                    System.out.println(Message.byeMessage());
+                    System.out.println(Ui.byeMessage());
                     break;
                 }
                 case LIST -> {
-                    System.out.println(Message.listMessage(taskList));
+                    System.out.println(Ui.listMessage(taskList));
                 }
                 case MARK -> {
-                    CommandHandler.handleMark(input, taskList, true);
+                    taskList.handleMark(input, true);
                 }
                 case UNMARK -> {
-                    CommandHandler.handleMark(input, taskList, false);
+                    taskList.handleMark(input, false);
                 }
                 case DELETE -> {
-                    CommandHandler.handleDelete(input, taskList);
+                    taskList.handleDelete(input);
                 }
                 case ADD_TASK -> {
-                    CommandHandler.handleAdd(input, taskList);
+                    taskList.handleAdd(input);
                 }
                 case TODO -> {
-                    CommandHandler.handleTodoWithErrorCheck(input, taskList);
+                    taskList.handleTodoWithErrorCheck(input);
                 }
                 case DEADLINE -> {
-                    CommandHandler.handleDeadlineWithErrorCheck(input, taskList);
+                    taskList.handleDeadlineWithErrorCheck(input);
                 }
                 case EVENT -> {
-                    CommandHandler.handleEventWithErrorCheck(input, taskList);
+                    taskList.handleEventWithErrorCheck(input);
                 }
                 case INVALID -> {
                     ErrorHandler.printError("I don't understand that command. Try 'list', 'todo <description>', 'delete <number>', or 'bye'.");
@@ -67,19 +67,5 @@ public class Wheezy {
                 ErrorHandler.printError("Something went wrong! Please try again");
             }
         }
-    }
-
-    private static void printWelcome() {
-        String logo = """
-                         __      __..__                                 \s
-                        /  \\    /  \\  |__   ____   ____ __________.__.
-                        \\   \\/\\/   /  |  \\_/ __ \\_/ __ \\\\____ |   |  |
-                         \\        /|   Y  \\  ___/\\  ___/ /    /\\___  |
-                          \\__/\\__/ |___|__/\\____/ \\____/ |____| /____|
-                """;
-        System.out.println("        __________________________________________________________");
-        System.out.println("        Hello I'm\n" + logo);
-        System.out.println("        What can I do for you?");
-        System.out.println("        __________________________________________________________\n");
     }
 }

@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class FileHandler {
+public class Storage {
     public static void createDirectory() throws IOException {
         new File("data").mkdirs();
         new File("data/wheezy.txt").createNewFile();
     }
 
-    public static ArrayList<Task> loadContent(ArrayList<Task> taskList) throws FileNotFoundException {
+    public static TaskList loadContent(TaskList taskList) throws FileNotFoundException {
         File f = new File("data/wheezy.txt");
         Scanner scanner = new Scanner(f);
 

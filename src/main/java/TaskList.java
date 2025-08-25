@@ -1,43 +1,62 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CommandHandler {
-    public static void handleMark(String input, ArrayList<Task> taskList, boolean markAsDone) {
-        try {
-            int taskNumber = CommandParser.extractTaskNumber(input);
+public class TaskList {
+    private ArrayList<Task> taskList;
 
-            if (taskList.isEmpty()) {
+    public TaskList(ArrayList<Task> taskList) {
+        this.taskList = taskList;
+    }
+
+    public boolean isEmpty() {
+        return this.taskList.isEmpty();
+    }
+
+    public int size() {
+        return this.taskList.size();
+    }
+
+    public Task get(int i) {
+        return this.taskList.get(i);
+    }
+
+    public void add(Task task) {
+        this.taskList.add(task);
+    }
+
+    public void handleMark(String input, boolean markAsDone) {
+        try {
+            int taskNumber = Parser.extractTaskNumber(input);
+
+            if (this.taskList.isEmpty()) {
                 ErrorHandler.printError("Your task list is empty! Add some tasks first.");
                 return;
             }
 
-            if (taskNumber < 0 || taskNumber >= taskList.size()) {
-                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + taskList.size() + " task(s).");
+            if (taskNumber < 0 || taskNumber >= this.taskList.size()) {
+                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
                 return;
+
             }
 
-            Task task = taskList.get(taskNumber);
+            Task task = this.taskList.get(taskNumber);
             if (markAsDone) {
                 task.markDone();
                 try {
-                    FileHandler.fileMark(taskNumber, true);
+                    Storage.fileMark(taskNumber, true);
                 } catch (IOException ioe) {
                     System.out.println("An IO Exception occurred: " + ioe.getMessage());
                 }
             } else {
                 task.unmarkDone();
                 try {
-                    FileHandler.fileMark(taskNumber, false);
+                    Storage.fileMark(taskNumber, false);
                 } catch (IOException ioe) {
                     System.out.println("An IO Exception occurred: " + ioe.getMessage());
                 }
             }
 
-            String action = markAsDone ? " done" : " not done yet";
-            System.out.println("        ____________________________________________________________");
-            System.out.println("        Nice! I've marked this task as" + action + ":");
-            System.out.println("          " + task);
-            System.out.println("        ____________________________________________________________");
+            Ui.markAsDoneMessage(markAsDone, task);
 
         } catch (NumberFormatException e) {
             String command = markAsDone ? "mark" : "unmark";
@@ -45,74 +64,74 @@ public class CommandHandler {
         }
     }
 
-    public static void handleDelete(String input, ArrayList<Task> taskList) {
+    public void handleDelete(String input) {
         try {
-            int taskNumber = CommandParser.extractTaskNumber(input);
+            int taskNumber = Parser.extractTaskNumber(input);
 
-            if (taskList.isEmpty()) {
+            if (this.taskList.isEmpty()) {
                 ErrorHandler.printError("Your task list is empty! Nothing to delete.");
                 return;
             }
 
-            if (taskNumber < 0 || taskNumber >= taskList.size()) {
-                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + taskList.size() + " task(s).");
+            if (taskNumber < 0 || taskNumber >= this.taskList.size()) {
+                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
                 return;
             }
 
-            Task deletedTask = taskList.remove(taskNumber);
+            Task deletedTask = this.taskList.remove(taskNumber);
             try {
-                FileHandler.fileDelete(taskNumber);
+                Storage.fileDelete(taskNumber);
             } catch (IOException ioe) {
                 System.out.println("An IO Exception occurred: " + ioe.getMessage());
             }
-            System.out.println(Message.deleteMessage(deletedTask, taskList.size()));
+            System.out.println(Ui.deleteMessage(deletedTask, this.taskList.size()));
 
         } catch (NumberFormatException e) {
             ErrorHandler.printError("Invalid task number! Usage: delete <task_number>");
         }
     }
 
-    public static void handleAdd(String input, ArrayList<Task> taskList) {
+    public void handleAdd(String input) {
         if (input.trim().isEmpty()) {
             ErrorHandler.printError("Task description cannot be empty!");
             return;
         }
 
         Task newTask = new Todo(input);
-        taskList.add(newTask);
+        this.taskList.add(newTask);
         try {
-            FileHandler.fileAdd(newTask);
+            Storage.fileAdd(newTask);
         } catch (IOException ioe) {
             System.out.println("An IO Exception occurred: " + ioe.getMessage());
         }
-        System.out.println(Message.addMessage(newTask, taskList.size()));
+        System.out.println(Ui.addMessage(newTask, this.taskList.size()));
     }
 
-    public static void handleTodoWithErrorCheck(String input, ArrayList<Task> taskList) {
+    public void handleTodoWithErrorCheck(String input) {
         try {
-            String description = CommandParser.extractTodoDescription(input);
+            String description = Parser.extractTodoDescription(input);
             if (description.trim().isEmpty()) {
                 ErrorHandler.printError("Todo description cannot be empty! Usage: todo <description>");
                 return;
             }
 
             Task newTask = new Todo(description);
-            taskList.add(newTask);
+            this.taskList.add(newTask);
             try {
-                FileHandler.fileAdd(newTask);
+                Storage.fileAdd(newTask);
             } catch (IOException ioe) {
                 System.out.println("An IO Exception occurred: " + ioe.getMessage());
             }
-            System.out.println(Message.addMessage(newTask, taskList.size()));
+            System.out.println(Ui.addMessage(newTask, this.taskList.size()));
         } catch (StringIndexOutOfBoundsException e) {
             ErrorHandler.printError("Todo description is missing! Usage: todo <description>");
         }
     }
 
-    public static void handleDeadlineWithErrorCheck(String input, ArrayList<Task> taskList) {
+    public void handleDeadlineWithErrorCheck(String input) {
         try {
-            String description = CommandParser.extractDeadlineDescription(input);
-            String deadline = CommandParser.extractDeadlineDate(input);
+            String description = Parser.extractDeadlineDescription(input);
+            String deadline = Parser.extractDeadlineDate(input);
 
             if (description.trim().isEmpty()) {
                 ErrorHandler.printError("Deadline description cannot be empty! Usage: deadline <description> /by <date>");
@@ -124,13 +143,13 @@ public class CommandHandler {
             }
 
             Task newTask = new Deadline(description, deadline);
-            taskList.add(newTask);
+            this.taskList.add(newTask);
             try {
-                FileHandler.fileAdd(newTask);
+                Storage.fileAdd(newTask);
             } catch (IOException ioe) {
                 System.out.println("An IO Exception occurred: " + ioe.getMessage());
             }
-            System.out.println(Message.addMessage(newTask, taskList.size()));
+            System.out.println(Ui.addMessage(newTask, this.taskList.size()));
         } catch (IllegalArgumentException e) {
             ErrorHandler.printError("Invalid deadline format! Usage: deadline <description> /by <date>");
         } catch (StringIndexOutOfBoundsException e) {
@@ -138,11 +157,11 @@ public class CommandHandler {
         }
     }
 
-    public static void handleEventWithErrorCheck(String input, ArrayList<Task> taskList) {
+    public void handleEventWithErrorCheck(String input) {
         try {
-            String description = CommandParser.extractEventDescription(input);
-            String from = CommandParser.extractEventStartTime(input);
-            String until = CommandParser.extractEventEndTime(input);
+            String description = Parser.extractEventDescription(input);
+            String from = Parser.extractEventStartTime(input);
+            String until = Parser.extractEventEndTime(input);
 
             if (description.trim().isEmpty()) {
                 ErrorHandler.printError("Event description cannot be empty! Usage: event <description> /from <start> /to <end>");
@@ -158,13 +177,13 @@ public class CommandHandler {
             }
 
             Task newTask = new Event(description, from, until);
-            taskList.add(newTask);
+            this.taskList.add(newTask);
             try {
-                FileHandler.fileAdd(newTask);
+                Storage.fileAdd(newTask);
             } catch (IOException ioe) {
                 System.out.println("An IO Exception occurred: " + ioe.getMessage());
             }
-            System.out.println(Message.addMessage(newTask, taskList.size()));
+            System.out.println(Ui.addMessage(newTask, this.taskList.size()));
         } catch (IllegalArgumentException e) {
             ErrorHandler.printError("Invalid event format! Usage: event <description> /from <start> /to <end>");
         } catch (StringIndexOutOfBoundsException e) {
