@@ -14,37 +14,37 @@ public class Wheezy {
                 CommandType commandType = CommandParser.parseCommand(input);
 
                 switch (commandType) {
-                    case BYE -> {
-                        System.out.println(Message.byeMessage());
-                        break;
-                    }
-                    case LIST -> {
-                        System.out.println(Message.listMessage(taskList));
-                    }
-                    case MARK -> {
-                        CommandHandler.handleMark(input, taskList, true);
-                    }
-                    case UNMARK -> {
-                        CommandHandler.handleMark(input, taskList, false);
-                    }
-                    case DELETE -> {
-                        CommandHandler.handleDelete(input, taskList);
-                    }
-                    case ADD_TASK -> {
-                        CommandHandler.handleAdd(input, taskList);
-                    }
-                    case TODO -> {
-                        CommandHandler.handleTodoWithErrorCheck(input, taskList);
-                    }
-                    case DEADLINE -> {
-                        CommandHandler.handleDeadlineWithErrorCheck(input, taskList);
-                    }
-                    case EVENT -> {
-                        CommandHandler.handleEventWithErrorCheck(input, taskList);
-                    }
-                    case INVALID -> {
-                        ErrorHandler.printError("I don't understand that command. Try 'list', 'todo <description>', 'delete <number>', or 'bye'.");
-                    }
+                case BYE -> {
+                    System.out.println(Message.byeMessage());
+                    break;
+                }
+                case LIST -> {
+                    System.out.println(Message.listMessage(taskList));
+                }
+                case MARK -> {
+                    CommandHandler.handleMark(input, taskList, true);
+                }
+                case UNMARK -> {
+                    CommandHandler.handleMark(input, taskList, false);
+                }
+                case DELETE -> {
+                    CommandHandler.handleDelete(input, taskList);
+                }
+                case ADD_TASK -> {
+                    CommandHandler.handleAdd(input, taskList);
+                }
+                case TODO -> {
+                    CommandHandler.handleTodoWithErrorCheck(input, taskList);
+                }
+                case DEADLINE -> {
+                    CommandHandler.handleDeadlineWithErrorCheck(input, taskList);
+                }
+                case EVENT -> {
+                    CommandHandler.handleEventWithErrorCheck(input, taskList);
+                }
+                case INVALID -> {
+                    ErrorHandler.printError("I don't understand that command. Try 'list', 'todo <description>', 'delete <number>', or 'bye'.");
+                }
                 }
 
                 if (commandType == CommandType.BYE) {
