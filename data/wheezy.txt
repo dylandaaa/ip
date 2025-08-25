@@ -1,3 +1,4 @@
 T|0|read book
-D|0|2109s ps1|tomorrow
-E|0|burger party|today|tomorrow
+D|0|2109s ps1|2025-08-25
+E|0|burger party|2025-08-25|2025-08-26
+D|1|2103 wk3 ip|2025-08-30
