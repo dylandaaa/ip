@@ -16,6 +16,7 @@ public class CommandParser {
     }
 
     public static int extractTaskNumber(String input) throws NumberFormatException {
+        // taskNumber returns in 0 format
         String[] parts = input.split(" ");
         if (parts.length != 2) throw new NumberFormatException("Invalid Format");
         return Integer.parseInt(parts[1]) - 1;

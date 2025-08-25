@@ -1,8 +1,12 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -23,6 +27,61 @@ public class FileHandler {
             }
 
             return taskList;
+    }
+
+    public static void fileMark(int taskNumber, boolean isDone) throws IOException {
+        File f = new File("data/wheezy.txt");
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+
+        String oldLine = lines.get(taskNumber);
+        String[] parts = oldLine.split("\\|");
+        if (isDone) {
+            parts[1] = "1";
+        } else {
+            parts[1] = "0";
+        }
+        lines.set(taskNumber, String.join("|", parts));
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        }
+    }
+
+    public static void fileAdd(Task task) throws IOException {
+        FileWriter fw = new FileWriter("data/wheezy.txt", true);
+        fw.write(task.toFileString());
+        fw.close();
+    }
+
+    public static void fileDelete(int taskNumber) throws IOException {
+        File f = new File("data/wheezy.txt");
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+
+        lines.remove(taskNumber);
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        }
     }
 
     public static Task fileContentParser(String input) {
@@ -54,7 +113,7 @@ public class FileHandler {
             }
             return event;
         default:
-            return new Task(description);
+            return new Todo(description);
         }
     }
 }

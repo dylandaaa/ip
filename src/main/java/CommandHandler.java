@@ -62,7 +62,7 @@ public class CommandHandler {
             return;
         }
 
-        Task newTask = new Task(input);
+        Task newTask = new Todo(input);
         taskList.add(newTask);
         System.out.println(Message.addMessage(newTask, taskList.size()));
     }
