@@ -1,18 +1,22 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 public class Event extends Task {
-    private String from;
-    private String until;
+    private LocalDate from;
+    private LocalDate until;
 
     public Event(String input, String from, String until) {
         super(input);
-        this.from = from;
-        this.until = until;
+        this.from = LocalDate.parse(from);
+        this.until = LocalDate.parse(until);
     }
 
-    public String getFrom() {
+    public LocalDate getFrom() {
         return this.from;
     }
 
-    public String getUntil() {
+    public LocalDate getUntil() {
         return this.until;
     }
 
@@ -29,11 +33,14 @@ public class Event extends Task {
         } else {
             isDone = "0";
         }
-        return "E|" + isDone + "|" + this.getDescription() + "|" + this.from + "|" + this.until;
+        return "E|" + isDone + "|" + this.getDescription() + "|" +
+                this.from + "|" + this.until;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.from + " to: " + this.until + ")";
+        return "[E]" + super.toString() + " (from: " +
+                this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) +
+                " to: " + this.until.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }

@@ -2,15 +2,33 @@ public class CommandParser {
     public static CommandType parseCommand(String input) {
         String command = input.trim().toLowerCase();
 
-        if (command.equals("bye")) return CommandType.BYE;
-        if (command.equals("list")) return CommandType.LIST;
-        if (command.startsWith("mark ")) return CommandType.MARK;
-        if (command.startsWith("unmark ")) return CommandType.UNMARK;
-        if (command.startsWith("todo ")) return CommandType.TODO;
-        if (command.startsWith("event ")) return CommandType.EVENT;
-        if (command.startsWith("deadline ")) return CommandType.DEADLINE;
-        if (command.startsWith("delete ")) return CommandType.DELETE;
-        if (command.trim().isEmpty()) return CommandType.INVALID;
+        if (command.equals("bye")) {
+            return CommandType.BYE;
+        }
+        if (command.equals("list")) {
+            return CommandType.LIST;
+        }
+        if (command.startsWith("mark ")) {
+            return CommandType.MARK;
+        }
+        if (command.startsWith("unmark ")) {
+            return CommandType.UNMARK;
+        }
+        if (command.startsWith("todo ")) {
+            return CommandType.TODO;
+        }
+        if (command.startsWith("event ")) {
+            return CommandType.EVENT;
+        }
+        if (command.startsWith("deadline ")) {
+            return CommandType.DEADLINE;
+        }
+        if (command.startsWith("delete ")) {
+            return CommandType.DELETE;
+        }
+        if (command.trim().isEmpty()) {
+            return CommandType.INVALID;
+        }
 
         return CommandType.ADD_TASK;
     }
