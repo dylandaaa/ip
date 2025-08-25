@@ -1,23 +1,28 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.io.FileWriter;
 
 public class FileHandler {
+    public static void createDirectory() throws IOException {
+        new File("data").mkdirs();
+        new File("data/wheezy.txt").createNewFile();
+    }
+
     public static ArrayList<Task> loadContent(ArrayList<Task> taskList) throws FileNotFoundException {
         // reads and returns the taskList from the ./data/wheezy.txt file
-        File f = new File("data/wheezy.txt");
-        Scanner scanner = new Scanner(f);
+            File f = new File("data/wheezy.txt");
+            Scanner scanner = new Scanner(f);
 
-        while (scanner.hasNext()) {
-            Task newTask = fileContentParser(scanner.nextLine());
-            taskList.add(newTask);
-        }
+            while (scanner.hasNext()) {
+                Task newTask = fileContentParser(scanner.nextLine());
+                taskList.add(newTask);
+            }
 
-        return taskList;
+            return taskList;
     }
 
     public static Task fileContentParser(String input) {
