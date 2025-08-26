@@ -1,6 +1,12 @@
+package wheezy;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import wheezy.tasklist.TaskList;
+import wheezy.task.Task;
+import wheezy.storage.Storage;
+import wheezy.ui.Ui;
 
 public class Wheezy {
     private TaskList taskList;

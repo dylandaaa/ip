@@ -1,3 +1,7 @@
+package wheezy.parser;
+
+import wheezy.commandtype.CommandType;
+
 public class Parser {
     public static CommandType parseCommand(String input) {
         String command = input.trim().toLowerCase();

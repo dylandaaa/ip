@@ -1,5 +1,13 @@
+package wheezy.tasklist;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import wheezy.task.Task;
+import wheezy.parser.Parser;
+import wheezy.ui.ErrorHandler;
+import wheezy.storage.Storage;
+import wheezy.ui.Ui;
+import wheezy.task.*;
 
 public class TaskList {
     private ArrayList<Task> taskList;

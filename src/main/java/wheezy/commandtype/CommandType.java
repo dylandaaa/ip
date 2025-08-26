@@ -1,3 +1,5 @@
+package wheezy.commandtype;
+
 public enum CommandType {
     TODO, EVENT, DEADLINE, LIST, MARK, UNMARK, BYE, INVALID, ADD_TASK, DELETE
 }
