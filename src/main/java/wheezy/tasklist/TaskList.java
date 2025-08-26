@@ -7,7 +7,9 @@ import wheezy.parser.Parser;
 import wheezy.ui.ErrorHandler;
 import wheezy.storage.Storage;
 import wheezy.ui.Ui;
-import wheezy.task.*;
+import wheezy.task.Event;
+import wheezy.task.Todo;
+import wheezy.task.Deadline;
 
 public class TaskList {
     private ArrayList<Task> taskList;

@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import wheezy.tasklist.TaskList;
-import wheezy.task.*;
+import wheezy.task.Task;
+import wheezy.task.Deadline;
+import wheezy.task.Event;
+import wheezy.task.Todo;
 
 public class Storage {
     public static void createDirectory() throws IOException {
