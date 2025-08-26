@@ -1,4 +1,4 @@
-public class CommandParser {
+public class Parser {
     public static CommandType parseCommand(String input) {
         String command = input.trim().toLowerCase();
 
