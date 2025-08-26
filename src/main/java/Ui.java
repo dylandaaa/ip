@@ -1,7 +1,63 @@
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Ui {
-    private static void printWelcome() {
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void startUi(TaskList taskList) {
+        while (true) {
+            try {
+                String input = scanner.nextLine();
+                CommandType commandType = Parser.parseCommand(input);
+
+                switch (commandType) {
+                case BYE -> {
+                    System.out.println(Ui.byeMessage());
+                    break;
+                }
+                case LIST -> {
+                    System.out.println(Ui.listMessage(taskList));
+                }
+                case MARK -> {
+                    taskList.handleMark(input, true);
+                }
+                case UNMARK -> {
+                    taskList.handleMark(input, false);
+                }
+                case DELETE -> {
+                    taskList.handleDelete(input);
+                }
+                case ADD_TASK -> {
+                    taskList.handleAdd(input);
+                }
+                case TODO -> {
+                    taskList.handleTodoWithErrorCheck(input);
+                }
+                case DEADLINE -> {
+                    taskList.handleDeadlineWithErrorCheck(input);
+                }
+                case EVENT -> {
+                    taskList.handleEventWithErrorCheck(input);
+                }
+                case INVALID -> {
+                    ErrorHandler.printError("I don't understand that command. Try 'list', 'todo <description>', 'delete <number>', or 'bye'.");
+                }
+                }
+
+                if (commandType == CommandType.BYE) {
+                    break;
+                }
+            } catch (DateTimeParseException dtpe) {
+                ErrorHandler.printError("Date is in the incorrect format!: \n" +
+                        "        It should be in <yyyy>-<mm>-<dd>.");
+            } catch (Exception e) {
+                ErrorHandler.printError("Something went wrong! Please try again.");
+            }
+        }
+    }
+
+    public static void printWelcome() {
         String logo = """
                          __      __..__                                 \s
                         /  \\    /  \\  |__   ____   ____ __________.__.
@@ -26,7 +82,7 @@ public class Ui {
     public static String listMessage(TaskList taskList) {
 
         StringBuilder message = new StringBuilder();
-        message.append("       ____________________________________________________________\n");
+        message.append("        ____________________________________________________________\n");
 
         if (taskList.isEmpty()) {
             message.append("        Your task list is empty! Add some tasks to get started.\n");
@@ -41,7 +97,7 @@ public class Ui {
             }
         }
 
-        message.append("       ____________________________________________________________\n");
+        message.append("        ____________________________________________________________\n");
         return message.toString();
     }
 
@@ -61,11 +117,11 @@ public class Ui {
                 "        ____________________________________________________________\n";
     }
 
-    public static void markAsDoneMessage(boolean markAsDone, Task task) {
+    public static String markAsDoneMessage(boolean markAsDone, Task task) {
         String action = markAsDone ? " done" : " not done yet";
-        System.out.println("        ____________________________________________________________");
-        System.out.println("        Nice! I've marked this task as" + action + ":");
-        System.out.println("          " + task);
-        System.out.println("        ____________________________________________________________");
+        return "        ____________________________________________________________\n" +
+                "        Nice! I've marked this task as" + action + ":\n" +
+                "        " + task + "\n" +
+                "        ____________________________________________________________\n";
     }
 }

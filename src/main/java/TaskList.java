@@ -56,7 +56,7 @@ public class TaskList {
                 }
             }
 
-            Ui.markAsDoneMessage(markAsDone, task);
+            System.out.println(Ui.markAsDoneMessage(markAsDone, task));
 
         } catch (NumberFormatException e) {
             String command = markAsDone ? "mark" : "unmark";
