@@ -2,6 +2,7 @@ package wheezy.ui;
 
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+
 import wheezy.tasklist.TaskList;
 import wheezy.commandtype.CommandType;
 import wheezy.parser.Parser;
@@ -55,8 +56,7 @@ public class Ui {
                     break;
                 }
             } catch (DateTimeParseException dtpe) {
-                ErrorHandler.printError("Date is in the incorrect format!: \n" +
-                        "        It should be in <yyyy>-<mm>-<dd>.");
+                ErrorHandler.printError("Date is in the incorrect format!: \n" + "        It should be in <yyyy>-<mm>-<dd>.");
             } catch (Exception e) {
                 ErrorHandler.printError("Something went wrong! Please try again.");
             }
@@ -79,10 +79,10 @@ public class Ui {
 
     public static String byeMessage() {
         return """
-                            ____________________________________________________________
-                            Bye, see you around!
-                            ____________________________________________________________
-                    """;
+                        ____________________________________________________________
+                        Bye, see you around!
+                        ____________________________________________________________
+                """;
     }
 
     public static String listMessage(TaskList taskList) {
@@ -95,11 +95,7 @@ public class Ui {
         } else {
             message.append("        Here are the tasks in your list:\n");
             for (int i = 0; i < taskList.size(); i++) {
-                message.append("        ")
-                        .append((i + 1))
-                        .append(".")
-                        .append(taskList.get(i))
-                        .append("\n");
+                message.append("        ").append((i + 1)).append(".").append(taskList.get(i)).append("\n");
             }
         }
 
@@ -108,26 +104,15 @@ public class Ui {
     }
 
     public static String addMessage(Task task, int counter) {
-        return "       ____________________________________________________________\n" +
-                "       Great! I've added this task:\n" +
-                "       " + task + "\n" +
-                "       Now you have " + counter + " tasks in the list\n" +
-                "       ____________________________________________________________\n";
+        return "       ____________________________________________________________\n" + "       Great! I've added this task:\n" + "       " + task + "\n" + "       Now you have " + counter + " tasks in the list\n" + "       ____________________________________________________________\n";
     }
 
     public static String deleteMessage(Task deletedTask, int totalTasks) {
-        return "        ____________________________________________________________\n" +
-                "        Alrighty, I've removed this task:\n" +
-                "          " + deletedTask + "\n" +
-                "        Now you have " + totalTasks + " task(s) in the list.\n" +
-                "        ____________________________________________________________\n";
+        return "        ____________________________________________________________\n" + "        Alrighty, I've removed this task:\n" + "          " + deletedTask + "\n" + "        Now you have " + totalTasks + " task(s) in the list.\n" + "        ____________________________________________________________\n";
     }
 
     public static String markAsDoneMessage(boolean markAsDone, Task task) {
         String action = markAsDone ? " done" : " not done yet";
-        return "        ____________________________________________________________\n" +
-                "        Nice! I've marked this task as" + action + ":\n" +
-                "        " + task + "\n" +
-                "        ____________________________________________________________\n";
+        return "        ____________________________________________________________\n" + "        Nice! I've marked this task as" + action + ":\n" + "        " + task + "\n" + "        ____________________________________________________________\n";
     }
 }

@@ -34,14 +34,11 @@ public class Event extends Task {
         } else {
             isDone = "0";
         }
-        return "E|" + isDone + "|" + this.getDescription() + "|" +
-                this.from + "|" + this.until;
+        return "E|" + isDone + "|" + this.getDescription() + "|" + this.from + "|" + this.until;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " +
-                this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) +
-                " to: " + this.until.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return "[E]" + super.toString() + " (from: " + this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " to: " + this.until.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }

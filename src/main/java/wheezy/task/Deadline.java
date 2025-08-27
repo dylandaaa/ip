@@ -28,13 +28,11 @@ public class Deadline extends Task {
         } else {
             isDone = "0";
         }
-        return "D|" + isDone + "|" + this.getDescription() + "|" +
-                this.deadline;
+        return "D|" + isDone + "|" + this.getDescription() + "|" + this.deadline;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " +
-                this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return "[D]" + super.toString() + " (by: " + this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }
