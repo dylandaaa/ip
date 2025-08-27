@@ -30,11 +30,8 @@ public class Parser {
         if (command.startsWith("delete ")) {
             return CommandType.DELETE;
         }
-        if (command.trim().isEmpty()) {
-            return CommandType.INVALID;
-        }
 
-        return CommandType.ADD_TASK;
+        return CommandType.INVALID;
     }
 
     public static int extractTaskNumber(String input) throws NumberFormatException {

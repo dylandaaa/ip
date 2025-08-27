@@ -50,6 +50,7 @@ public class Ui {
                 }
                 }
 
+
                 if (commandType == CommandType.BYE) {
                     break;
                 }
