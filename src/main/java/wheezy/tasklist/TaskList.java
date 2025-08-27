@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import wheezy.task.Task;
 import wheezy.parser.Parser;
-import wheezy.ui.ErrorHandler;
 import wheezy.storage.Storage;
 import wheezy.ui.Ui;
 import wheezy.task.Event;
@@ -81,12 +80,12 @@ public class TaskList {
             int taskNumber = Parser.extractTaskNumber(input);
 
             if (this.taskList.isEmpty()) {
-                ErrorHandler.printError("Your task list is empty! Add some tasks first.");
+                Ui.printError("Your task list is empty! Add some tasks first.");
                 return;
             }
 
             if (taskNumber < 0 || taskNumber >= this.taskList.size()) {
-                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
+                Ui.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
                 return;
 
             }
@@ -112,7 +111,7 @@ public class TaskList {
 
         } catch (NumberFormatException e) {
             String command = markAsDone ? "mark" : "unmark";
-            ErrorHandler.printError("Invalid task number! Usage: " + command + " <task_number>");
+            Ui.printError("Invalid task number! Usage: " + command + " <task_number>");
         }
     }
 
@@ -127,12 +126,12 @@ public class TaskList {
             int taskNumber = Parser.extractTaskNumber(input);
 
             if (this.taskList.isEmpty()) {
-                ErrorHandler.printError("Your task list is empty! Nothing to delete.");
+                Ui.printError("Your task list is empty! Nothing to delete.");
                 return;
             }
 
             if (taskNumber < 0 || taskNumber >= this.taskList.size()) {
-                ErrorHandler.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
+                Ui.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
                 return;
             }
 
@@ -145,7 +144,7 @@ public class TaskList {
             System.out.println(Ui.deleteMessage(deletedTask, this.taskList.size()));
 
         } catch (NumberFormatException e) {
-            ErrorHandler.printError("Invalid task number! Usage: delete <task_number>");
+            Ui.printError("Invalid task number! Usage: delete <task_number>");
         }
     }
 
@@ -156,7 +155,7 @@ public class TaskList {
      */
     public void handleAdd(String input) {
         if (input.trim().isEmpty()) {
-            ErrorHandler.printError("Task description cannot be empty!");
+            Ui.printError("Task description cannot be empty!");
             return;
         }
 
@@ -179,7 +178,7 @@ public class TaskList {
         try {
             String description = Parser.extractTodoDescription(input);
             if (description.trim().isEmpty()) {
-                ErrorHandler.printError("Todo description cannot be empty! Usage: todo <description>");
+                Ui.printError("Todo description cannot be empty! Usage: todo <description>");
                 return;
             }
 
@@ -192,7 +191,7 @@ public class TaskList {
             }
             System.out.println(Ui.addMessage(newTask, this.taskList.size()));
         } catch (StringIndexOutOfBoundsException e) {
-            ErrorHandler.printError("Todo description is missing! Usage: todo <description>");
+            Ui.printError("Todo description is missing! Usage: todo <description>");
         }
     }
 
@@ -207,11 +206,11 @@ public class TaskList {
             String deadline = Parser.extractDeadlineDate(input);
 
             if (description.trim().isEmpty()) {
-                ErrorHandler.printError("Deadline description cannot be empty! Usage: deadline <description> /by <date>");
+                Ui.printError("Deadline description cannot be empty! Usage: deadline <description> /by <date>");
                 return;
             }
             if (deadline.trim().isEmpty()) {
-                ErrorHandler.printError("Deadline date cannot be empty! Usage: deadline <description> /by <date>");
+                Ui.printError("Deadline date cannot be empty! Usage: deadline <description> /by <date>");
                 return;
             }
 
@@ -224,9 +223,9 @@ public class TaskList {
             }
             System.out.println(Ui.addMessage(newTask, this.taskList.size()));
         } catch (IllegalArgumentException e) {
-            ErrorHandler.printError("Invalid deadline format! Usage: deadline <description> /by <date>");
+            Ui.printError("Invalid deadline format! Usage: deadline <description> /by <date>");
         } catch (StringIndexOutOfBoundsException e) {
-            ErrorHandler.printError("Deadline command is incomplete! Usage: deadline <description> /by <date>");
+            Ui.printError("Deadline command is incomplete! Usage: deadline <description> /by <date>");
         }
     }
 
@@ -242,15 +241,15 @@ public class TaskList {
             String until = Parser.extractEventEndTime(input);
 
             if (description.trim().isEmpty()) {
-                ErrorHandler.printError("Event description cannot be empty! Usage: event <description> /from <start> /to <end>");
+                Ui.printError("Event description cannot be empty! Usage: event <description> /from <start> /to <end>");
                 return;
             }
             if (from.trim().isEmpty()) {
-                ErrorHandler.printError("Event start time cannot be empty! Usage: event <description> /from <start> /to <end>");
+                Ui.printError("Event start time cannot be empty! Usage: event <description> /from <start> /to <end>");
                 return;
             }
             if (until.trim().isEmpty()) {
-                ErrorHandler.printError("Event end time cannot be empty! Usage: event <description> /from <start> /to <end>");
+                Ui.printError("Event end time cannot be empty! Usage: event <description> /from <start> /to <end>");
                 return;
             }
 
@@ -263,9 +262,9 @@ public class TaskList {
             }
             System.out.println(Ui.addMessage(newTask, this.taskList.size()));
         } catch (IllegalArgumentException e) {
-            ErrorHandler.printError("Invalid event format! Usage: event <description> /from <start> /to <end>");
+            Ui.printError("Invalid event format! Usage: event <description> /from <start> /to <end>");
         } catch (StringIndexOutOfBoundsException e) {
-            ErrorHandler.printError("Event command is incomplete! Usage: event <description> /from <start> /to <end>");
+            Ui.printError("Event command is incomplete! Usage: event <description> /from <start> /to <end>");
         }
     }
 }
