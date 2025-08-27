@@ -11,29 +11,71 @@ import wheezy.task.Event;
 import wheezy.task.Todo;
 import wheezy.task.Deadline;
 
+/*
+ * Represents a list of tasks as an ArrayList<Task>.
+ * Contains methods that are relevant to manipulating the
+ * tasks inside the task list itself.
+ */
 public class TaskList {
     private ArrayList<Task> taskList;
 
+    /**
+     * Constructor to construct the Task List.
+     *
+     * @param taskList An empty ArrayList<Task>.
+     */
     public TaskList(ArrayList<Task> taskList) {
         this.taskList = taskList;
     }
 
+    /**
+     * Helper function that shadows the isEmpty() function
+     * of regular ArrayLists.
+     *
+     * @return Boolean representing whether it is empty or not.
+     */
     public boolean isEmpty() {
         return this.taskList.isEmpty();
     }
 
+    /**
+     * Helper function that shadows the size() function of
+     * regular ArrayLists.
+     *
+     * @return Integer representing the size of the TaskList.
+     */
     public int size() {
         return this.taskList.size();
     }
 
+    /**
+     * Helper function that shadows the get() function of
+     * regular ArrayLists.
+     *
+     * @param i Integer index of the task to be retrieved.
+     * @return The Task at the specified index.
+     */
     public Task get(int i) {
         return this.taskList.get(i);
     }
 
+    /**
+     * Helper function that shadows the add() function of
+     * regular ArrayLists.
+     *
+     * @param task Task to be added to the TaskList.
+     */
     public void add(Task task) {
         this.taskList.add(task);
     }
 
+    /**
+     * Marks, saves into storage file, and prints a message when the user inputs
+     * a mark/unmark command. Handles relevant exceptions.
+     *
+     * @param input String representing the raw user input.
+     * @param markAsDone Boolean representing whether the user wants to mark/unmark.
+     */
     public void handleMark(String input, boolean markAsDone) {
         try {
             int taskNumber = Parser.extractTaskNumber(input);
@@ -74,6 +116,12 @@ public class TaskList {
         }
     }
 
+    /**
+     * Deletes from the TaskList, the storage file and prints the appropriate
+     * delete message to the user. Handles relevant exceptions.
+     *
+     * @param input String representing the raw user input.
+     */
     public void handleDelete(String input) {
         try {
             int taskNumber = Parser.extractTaskNumber(input);
@@ -101,6 +149,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds to the TaskList and to the storage file. Handles relevant exceptions.
+     *
+     * @param input String representing the raw user input.
+     */
     public void handleAdd(String input) {
         if (input.trim().isEmpty()) {
             ErrorHandler.printError("Task description cannot be empty!");
@@ -117,6 +170,11 @@ public class TaskList {
         System.out.println(Ui.addMessage(newTask, this.taskList.size()));
     }
 
+    /**
+     * Adds Todo tasks to the TaskList and to the storage file. Handles relevant exceptions.
+     *
+     * @param input String representing the raw user input.
+     */
     public void handleTodoWithErrorCheck(String input) {
         try {
             String description = Parser.extractTodoDescription(input);
@@ -138,6 +196,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds Deadline tasks to the TaskList and to the storage file. Handles relevant exceptions.
+     *
+     * @param input String representing the raw user input.
+     */
     public void handleDeadlineWithErrorCheck(String input) {
         try {
             String description = Parser.extractDeadlineDescription(input);
@@ -167,6 +230,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Adds Event tasks to the TaskList and to the storage file. Handles relevant exceptions.
+     *
+     * @param input String representing the raw user input.
+     */
     public void handleEventWithErrorCheck(String input) {
         try {
             String description = Parser.extractEventDescription(input);
