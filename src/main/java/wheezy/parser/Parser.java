@@ -30,6 +30,9 @@ public class Parser {
         if (command.startsWith("delete ")) {
             return CommandType.DELETE;
         }
+        if (command.startsWith("find ")) {
+            return CommandType.FIND;
+        }
 
         return CommandType.INVALID;
     }
@@ -93,6 +96,10 @@ public class Parser {
         }
 
         return withoutCommand.substring(toIndex + 4).trim();
+    }
+
+    public static String extractFindDescription(String input) {
+        return input.substring(5).trim();
     }
 
 }

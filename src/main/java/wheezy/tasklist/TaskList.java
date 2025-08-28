@@ -200,4 +200,17 @@ public class TaskList {
             ErrorHandler.printError("Event command is incomplete! Usage: event <description> /from <start> /to <end>");
         }
     }
+
+    public void handleFindWithErrorCheck(String input) {
+        String description = Parser.extractFindDescription(input);
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        for (Task task : taskList) {
+            if (task.getDescription().contains(description)) {
+                tasks.add(task);
+            }
+        }
+
+        System.out.println(Ui.findMessage(tasks));
+    }
 }
