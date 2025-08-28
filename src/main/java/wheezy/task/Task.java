@@ -66,12 +66,6 @@ abstract public class Task {
      */
     abstract public String toFileString();
 
-    /**
-     * Overrides the toString method to include the status and the
-     * description of the task.
-     *
-     * @return String including the status and description of the task.
-     */
     @Override
     public String toString() {
         String status = isDone ? "[X]" : "[ ]";

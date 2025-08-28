@@ -154,6 +154,12 @@ public class Parser {
         return withoutCommand.substring(toIndex + 4).trim();
     }
 
+    /**
+     * Extracts the task description from find commands.
+     *
+     * @param input String representing the user input containing the find command.
+     * @return Task description to be searched.
+     */
     public static String extractFindDescription(String input) {
         return input.substring(5).trim();
     }

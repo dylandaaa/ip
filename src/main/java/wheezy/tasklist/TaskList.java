@@ -269,6 +269,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Finds the tasks containing the string inputted by the user.
+     *
+     * @param input String representing the user input containing the keyword.
+     */
     public void handleFindWithErrorCheck(String input) {
         String description = Parser.extractFindDescription(input);
         ArrayList<Task> tasks = new ArrayList<>();
