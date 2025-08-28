@@ -1,6 +1,7 @@
 package wheezy.ui;
 
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import wheezy.tasklist.TaskList;
@@ -14,6 +15,7 @@ import wheezy.task.Task;
  */
 public class Ui {
     private static Scanner scanner = new Scanner(System.in);
+    private static final String dashedLines = "        __________________________________________________________\n";
 
     /**
      * Starts a loop that constantly asks for user input unless user types "bye".
@@ -57,6 +59,9 @@ public class Ui {
                 case EVENT -> {
                     taskList.handleEventWithErrorCheck(input);
                 }
+                case FIND -> {
+                    taskList.handleFindWithErrorCheck(input);
+                }
                 case INVALID -> {
                     Ui.printError("I don't understand that command. Try 'list', 'todo <description>', 'delete <number>', or 'bye'.");
                 }
@@ -86,10 +91,10 @@ public class Ui {
                          \\        /|   Y  \\  ___/\\  ___/ /    /\\___  |
                           \\__/\\__/ |___|__/\\____/ \\____/ |____| /____|
                 """;
-        System.out.println("        __________________________________________________________");
+        System.out.println(dashedLines);
         System.out.println("        Hello I'm\n" + logo);
         System.out.println("        What can I do for you?");
-        System.out.println("        __________________________________________________________\n");
+        System.out.println(dashedLines);
     }
 
     /**
@@ -98,11 +103,7 @@ public class Ui {
      * @return String representing the bye message.
      */
     public static String byeMessage() {
-        return """
-                            ____________________________________________________________
-                            Bye, see you around!
-                            ____________________________________________________________
-                    """;
+        return dashedLines + "        Bye, see you around!\n" + dashedLines;
     }
 
     /**
@@ -114,7 +115,7 @@ public class Ui {
     public static String listMessage(TaskList taskList) {
 
         StringBuilder message = new StringBuilder();
-        message.append("        ____________________________________________________________\n");
+        message.append(dashedLines);
 
         if (taskList.isEmpty()) {
             message.append("        Your task list is empty! Add some tasks to get started.\n");
@@ -129,7 +130,7 @@ public class Ui {
             }
         }
 
-        message.append("        ____________________________________________________________\n");
+        message.append(dashedLines);
         return message.toString();
     }
 
@@ -141,11 +142,11 @@ public class Ui {
      * @return String representing the add message.
      */
     public static String addMessage(Task task, int counter) {
-        return "       ____________________________________________________________\n" +
+        return dashedLines +
                 "       Great! I've added this task:\n" +
                 "       " + task + "\n" +
                 "       Now you have " + counter + " tasks in the list\n" +
-                "       ____________________________________________________________\n";
+                dashedLines;
     }
 
     /**
@@ -156,11 +157,11 @@ public class Ui {
      * @return String representing the delete message.
      */
     public static String deleteMessage(Task deletedTask, int totalTasks) {
-        return "        ____________________________________________________________\n" +
+        return dashedLines +
                 "        Alrighty, I've removed this task:\n" +
                 "          " + deletedTask + "\n" +
                 "        Now you have " + totalTasks + " task(s) in the list.\n" +
-                "        ____________________________________________________________\n";
+                dashedLines;
     }
 
     /**
@@ -172,10 +173,31 @@ public class Ui {
      */
     public static String markAsDoneMessage(boolean markAsDone, Task task) {
         String action = markAsDone ? " done" : " not done yet";
-        return "        ____________________________________________________________\n" +
+        return dashedLines +
                 "        Nice! I've marked this task as" + action + ":\n" +
                 "        " + task + "\n" +
-                "        ____________________________________________________________\n";
+                dashedLines;
+    }
+
+    public static String findMessage(ArrayList<Task> tasks) {
+        StringBuilder message = new StringBuilder();
+        message.append(dashedLines);
+        int counter = 1;
+
+        if (tasks.isEmpty()) {
+            message.append("No tasks found!");
+        } else {
+            for (Task task : tasks) {
+                message.append("        ");
+                message.append(counter).append(".");
+                message.append(task);
+                message.append("\n");
+                counter++;
+            }
+        }
+
+        message.append(dashedLines);
+        return message.toString();
     }
 
     /**
