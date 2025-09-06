@@ -32,6 +32,13 @@ public class Wheezy {
         Ui.startUi(this.taskList);
     }
 
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Wheezy heard: " + input;
+    }
+
     public static void main(String[] args) {
         new Wheezy().run();
     }
