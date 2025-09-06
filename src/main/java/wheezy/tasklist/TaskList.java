@@ -75,20 +75,19 @@ public class TaskList {
      *
      * @param input String representing the raw user input.
      * @param markAsDone Boolean representing whether the user wants to mark/unmark.
+     * @return The string output from Wheezy.
      */
-    public void handleMark(String input, boolean markAsDone) {
+    public String handleMark(String input, boolean markAsDone) {
         try {
             int taskNumber = Parser.extractTaskNumber(input);
 
             if (this.taskList.isEmpty()) {
-                Ui.printError("Your task list is empty! Add some tasks first.");
-                return;
+                return Ui.printError("Your task list is empty! Add some tasks first.");
             }
 
             if (taskNumber < 0 || taskNumber >= this.taskList.size()) {
-                Ui.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
-                return;
-
+                return Ui.printError("Task number " + (taskNumber + 1) +
+                        " doesn't exist! You have " + this.taskList.size() + " task(s).");
             }
 
             Task task = this.taskList.get(taskNumber);
@@ -97,22 +96,22 @@ public class TaskList {
                 try {
                     Storage.fileMark(taskNumber, true);
                 } catch (IOException ioe) {
-                    System.out.println("An IO Exception occurred: " + ioe.getMessage());
+                    return "An IO Exception occurred: " + ioe.getMessage();
                 }
             } else {
                 task.unmarkDone();
                 try {
                     Storage.fileMark(taskNumber, false);
                 } catch (IOException ioe) {
-                    System.out.println("An IO Exception occurred: " + ioe.getMessage());
+                    return "An IO Exception occurred: " + ioe.getMessage();
                 }
             }
 
-            System.out.println(Ui.markAsDoneMessage(markAsDone, task));
+            return Ui.markAsDoneMessage(markAsDone, task);
 
         } catch (NumberFormatException e) {
             String command = markAsDone ? "mark" : "unmark";
-            Ui.printError("Invalid task number! Usage: " + command + " <task_number>");
+            return Ui.printError("Invalid task number! Usage: " + command + " <task_number>");
         }
     }
 
@@ -121,31 +120,32 @@ public class TaskList {
      * delete message to the user. Handles relevant exceptions.
      *
      * @param input String representing the raw user input.
+     * @return The string output from Wheezy.
      */
-    public void handleDelete(String input) {
+    public String handleDelete(String input) {
         try {
             int taskNumber = Parser.extractTaskNumber(input);
 
             if (this.taskList.isEmpty()) {
-                Ui.printError("Your task list is empty! Nothing to delete.");
-                return;
+                return Ui.printError("Your task list is empty! Nothing to delete.");
             }
 
             if (taskNumber < 0 || taskNumber >= this.taskList.size()) {
-                Ui.printError("Task number " + (taskNumber + 1) + " doesn't exist! You have " + this.taskList.size() + " task(s).");
-                return;
+                return Ui.printError("Task number " + (taskNumber + 1) +
+                        " doesn't exist! You have " + this.taskList.size() + " task(s).");
             }
 
             Task deletedTask = this.taskList.remove(taskNumber);
             try {
                 Storage.fileDelete(taskNumber);
             } catch (IOException ioe) {
-                System.out.println("An IO Exception occurred: " + ioe.getMessage());
+                return "An IO Exception occurred: " + ioe.getMessage();
             }
-            System.out.println(Ui.deleteMessage(deletedTask, this.taskList.size()));
+
+            return Ui.deleteMessage(deletedTask, this.taskList.size());
 
         } catch (NumberFormatException e) {
-            Ui.printError("Invalid task number! Usage: delete <task_number>");
+            return Ui.printError("Invalid task number! Usage: delete <task_number>");
         }
     }
 
@@ -153,11 +153,11 @@ public class TaskList {
      * Adds to the TaskList and to the storage file. Handles relevant exceptions.
      *
      * @param input String representing the raw user input.
+     * @return The string output from Wheezy
      */
-    public void handleAdd(String input) {
+    public String handleAdd(String input) {
         if (input.trim().isEmpty()) {
-            Ui.printError("Task description cannot be empty!");
-            return;
+            return Ui.printError("Task description cannot be empty!");
         }
 
         Task newTask = new Todo(input);
@@ -165,22 +165,22 @@ public class TaskList {
         try {
             Storage.fileAdd(newTask);
         } catch (IOException ioe) {
-            System.out.println("An IO Exception occurred: " + ioe.getMessage());
+            return "An IO Exception occurred: " + ioe.getMessage();
         }
-        System.out.println(Ui.addMessage(newTask, this.taskList.size()));
+        return Ui.addMessage(newTask, this.taskList.size());
     }
 
     /**
      * Adds Todo tasks to the TaskList and to the storage file. Handles relevant exceptions.
      *
      * @param input String representing the raw user input.
+     * @return The string output from Wheezy
      */
-    public void handleTodoWithErrorCheck(String input) {
+    public String handleTodoWithErrorCheck(String input) {
         try {
             String description = Parser.extractTodoDescription(input);
             if (description.trim().isEmpty()) {
-                Ui.printError("Todo description cannot be empty! Usage: todo <description>");
-                return;
+                return Ui.printError("Todo description cannot be empty! Usage: todo <description>");
             }
 
             Task newTask = new Todo(description);
@@ -188,11 +188,11 @@ public class TaskList {
             try {
                 Storage.fileAdd(newTask);
             } catch (IOException ioe) {
-                System.out.println("An IO Exception occurred: " + ioe.getMessage());
+                return "An IO Exception occurred: " + ioe.getMessage();
             }
-            System.out.println(Ui.addMessage(newTask, this.taskList.size()));
+            return Ui.addMessage(newTask, this.taskList.size());
         } catch (StringIndexOutOfBoundsException e) {
-            Ui.printError("Todo description is missing! Usage: todo <description>");
+            return Ui.printError("Todo description is missing! Usage: todo <description>");
         }
     }
 
@@ -200,19 +200,20 @@ public class TaskList {
      * Adds Deadline tasks to the TaskList and to the storage file. Handles relevant exceptions.
      *
      * @param input String representing the raw user input.
+     * @return The string output from Wheezy
      */
-    public void handleDeadlineWithErrorCheck(String input) {
+    public String handleDeadlineWithErrorCheck(String input) {
         try {
             String description = Parser.extractDeadlineDescription(input);
             String deadline = Parser.extractDeadlineDate(input);
 
             if (description.trim().isEmpty()) {
-                Ui.printError("Deadline description cannot be empty! Usage: deadline <description> /by <date>");
-                return;
+                return Ui.printError("Deadline description cannot be empty! " +
+                        "Usage: deadline <description> /by <date>");
             }
             if (deadline.trim().isEmpty()) {
-                Ui.printError("Deadline date cannot be empty! Usage: deadline <description> /by <date>");
-                return;
+                return Ui.printError("Deadline date cannot be empty! " +
+                        "Usage: deadline <description> /by <date>");
             }
 
             Task newTask = new Deadline(description, deadline);
@@ -222,11 +223,15 @@ public class TaskList {
             } catch (IOException ioe) {
                 System.out.println("An IO Exception occurred: " + ioe.getMessage());
             }
-            System.out.println(Ui.addMessage(newTask, this.taskList.size()));
+
+            return Ui.addMessage(newTask, this.taskList.size());
+
         } catch (IllegalArgumentException e) {
-            Ui.printError("Invalid deadline format! Usage: deadline <description> /by <date>");
+            return Ui.printError("Invalid deadline format! " +
+                    "Usage: deadline <description> /by <date>");
         } catch (StringIndexOutOfBoundsException e) {
-            Ui.printError("Deadline command is incomplete! Usage: deadline <description> /by <date>");
+            return Ui.printError("Deadline command is incomplete! " +
+                    "Usage: deadline <description> /by <date>");
         }
     }
 
@@ -234,24 +239,25 @@ public class TaskList {
      * Adds Event tasks to the TaskList and to the storage file. Handles relevant exceptions.
      *
      * @param input String representing the raw user input.
+     * @return The string output from Wheezy
      */
-    public void handleEventWithErrorCheck(String input) {
+    public String handleEventWithErrorCheck(String input) {
         try {
             String description = Parser.extractEventDescription(input);
             String from = Parser.extractEventStartTime(input);
             String until = Parser.extractEventEndTime(input);
 
             if (description.trim().isEmpty()) {
-                Ui.printError("Event description cannot be empty! Usage: event <description> /from <start> /to <end>");
-                return;
+                return Ui.printError("Event description cannot be empty! " +
+                        "Usage: event <description> /from <start> /to <end>");
             }
             if (from.trim().isEmpty()) {
-                Ui.printError("Event start time cannot be empty! Usage: event <description> /from <start> /to <end>");
-                return;
+                return Ui.printError("Event start time cannot be empty! " +
+                        "Usage: event <description> /from <start> /to <end>");
             }
             if (until.trim().isEmpty()) {
-                Ui.printError("Event end time cannot be empty! Usage: event <description> /from <start> /to <end>");
-                return;
+                return Ui.printError("Event end time cannot be empty! " +
+                        "Usage: event <description> /from <start> /to <end>");
             }
 
             Task newTask = new Event(description, from, until);
@@ -259,13 +265,15 @@ public class TaskList {
             try {
                 Storage.fileAdd(newTask);
             } catch (IOException ioe) {
-                System.out.println("An IO Exception occurred: " + ioe.getMessage());
+                return "An IO Exception occurred: " + ioe.getMessage();
             }
-            System.out.println(Ui.addMessage(newTask, this.taskList.size()));
+            return Ui.addMessage(newTask, this.taskList.size());
         } catch (IllegalArgumentException e) {
-            Ui.printError("Invalid event format! Usage: event <description> /from <start> /to <end>");
+            return Ui.printError("Invalid event format! " +
+                    "Usage: event <description> /from <start> /to <end>");
         } catch (StringIndexOutOfBoundsException e) {
-            Ui.printError("Event command is incomplete! Usage: event <description> /from <start> /to <end>");
+            return Ui.printError("Event command is incomplete! " +
+                    "Usage: event <description> /from <start> /to <end>");
         }
     }
 
@@ -273,8 +281,9 @@ public class TaskList {
      * Finds the tasks containing the string inputted by the user.
      *
      * @param input String representing the user input containing the keyword.
+     * @return The string ouput from Wheezy
      */
-    public void handleFindWithErrorCheck(String input) {
+    public String handleFindWithErrorCheck(String input) {
         String description = Parser.extractFindDescription(input);
         ArrayList<Task> tasks = new ArrayList<>();
 
@@ -284,6 +293,6 @@ public class TaskList {
             }
         }
 
-        System.out.println(Ui.findMessage(tasks));
+        return Ui.findMessage(tasks);
     }
 }

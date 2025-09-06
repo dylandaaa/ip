@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import wheezy.gui.CommandHandler;
 import wheezy.tasklist.TaskList;
 import wheezy.task.Task;
 import wheezy.storage.Storage;
@@ -33,10 +34,19 @@ public class Wheezy {
     }
 
     /**
-     * Generates a response for the user's chat message.
+     * Overloaded method for getResponse
+     * @param input
+     * @return String output from Wheezy
      */
     public String getResponse(String input) {
-        return "Wheezy heard: " + input;
+        return getResponse(input, taskList);
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input, TaskList taskList) {
+        return CommandHandler.handleResponse(input, taskList);
     }
 
     public static void main(String[] args) {
