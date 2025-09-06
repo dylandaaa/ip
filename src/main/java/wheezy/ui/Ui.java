@@ -16,6 +16,7 @@ import wheezy.task.Task;
 public class Ui {
     private static Scanner scanner = new Scanner(System.in);
     private static final String dashedLines = "        __________________________________________________________\n";
+    private static final String indentation = "        ";
 
     /**
      * Starts a loop that constantly asks for user input unless user types "bye".
@@ -39,31 +40,32 @@ public class Ui {
                     System.out.println(Ui.listMessage(taskList));
                 }
                 case MARK -> {
-                    taskList.handleMark(input, true);
+                    System.out.println(taskList.handleMark(input, true));
                 }
                 case UNMARK -> {
-                    taskList.handleMark(input, false);
+                    System.out.println(taskList.handleMark(input, false));
                 }
                 case DELETE -> {
-                    taskList.handleDelete(input);
+                    System.out.println(taskList.handleDelete(input));
                 }
                 case ADD_TASK -> {
-                    taskList.handleAdd(input);
+                    System.out.println(taskList.handleAdd(input));
                 }
                 case TODO -> {
-                    taskList.handleTodoWithErrorCheck(input);
+                    System.out.println(taskList.handleTodoWithErrorCheck(input));
                 }
                 case DEADLINE -> {
-                    taskList.handleDeadlineWithErrorCheck(input);
+                    System.out.println(taskList.handleDeadlineWithErrorCheck(input));
                 }
                 case EVENT -> {
-                    taskList.handleEventWithErrorCheck(input);
+                    System.out.println(taskList.handleEventWithErrorCheck(input));
                 }
                 case FIND -> {
-                    taskList.handleFindWithErrorCheck(input);
+                    System.out.println(taskList.handleFindWithErrorCheck(input));
                 }
                 case INVALID -> {
-                    Ui.printError("I don't understand that command. Try 'list', 'todo <description>', 'delete <number>', or 'bye'.");
+                    System.out.println(Ui.printError("I don't understand that command. " +
+                            "Try 'list', 'todo <description>', 'delete <number>', or 'bye'."));
                 }
                 }
 
@@ -72,10 +74,10 @@ public class Ui {
                     break;
                 }
             } catch (DateTimeParseException dtpe) {
-                Ui.printError("Date is in the incorrect format!: \n" +
-                        "        It should be in <yyyy>-<mm>-<dd>.");
+                System.out.println(Ui.printError("Date is in the incorrect format!: \n" +
+                        "        It should be in <yyyy>-<mm>-<dd>."));
             } catch (Exception e) {
-                Ui.printError("Something went wrong! Please try again.");
+                System.out.println(Ui.printError("Something went wrong! Please try again."));
             }
         }
     }
@@ -103,7 +105,7 @@ public class Ui {
      * @return String representing the bye message.
      */
     public static String byeMessage() {
-        return dashedLines + "        Bye, see you around!\n" + dashedLines;
+        return dashedLines + indentation + "see you around!\n" + dashedLines;
     }
 
     /**
@@ -118,11 +120,13 @@ public class Ui {
         message.append(dashedLines);
 
         if (taskList.isEmpty()) {
-            message.append("        Your task list is empty! Add some tasks to get started.\n");
+            message.append(indentation);
+            message.append("Your task list is empty! Add some tasks to get started.\n");
         } else {
-            message.append("        Here are the tasks in your list:\n");
+            message.append(indentation);
+            message.append("Here are the tasks in your list:\n");
             for (int i = 0; i < taskList.size(); i++) {
-                message.append("        ")
+                message.append(indentation)
                         .append((i + 1))
                         .append(".")
                         .append(taskList.get(i))
@@ -143,9 +147,9 @@ public class Ui {
      */
     public static String addMessage(Task task, int counter) {
         return dashedLines +
-                "       Great! I've added this task:\n" +
-                "       " + task + "\n" +
-                "       Now you have " + counter + " tasks in the list\n" +
+                indentation + "Great! I've added this task:\n" +
+                indentation + task + "\n" +
+                indentation + "Now you have " + counter + " tasks in the list\n" +
                 dashedLines;
     }
 
@@ -158,9 +162,9 @@ public class Ui {
      */
     public static String deleteMessage(Task deletedTask, int totalTasks) {
         return dashedLines +
-                "        Alrighty, I've removed this task:\n" +
-                "          " + deletedTask + "\n" +
-                "        Now you have " + totalTasks + " task(s) in the list.\n" +
+                indentation + "Alrighty, I've removed this task:\n" +
+                indentation + deletedTask + "\n" +
+                indentation + "Now you have " + totalTasks + " task(s) in the list.\n" +
                 dashedLines;
     }
 
@@ -174,8 +178,8 @@ public class Ui {
     public static String markAsDoneMessage(boolean markAsDone, Task task) {
         String action = markAsDone ? " done" : " not done yet";
         return dashedLines +
-                "        Nice! I've marked this task as" + action + ":\n" +
-                "        " + task + "\n" +
+                indentation + "Nice! I've marked this task as" + action + ":\n" +
+                indentation + task + "\n" +
                 dashedLines;
     }
 
@@ -188,7 +192,7 @@ public class Ui {
             message.append("No tasks found!");
         } else {
             for (Task task : tasks) {
-                message.append("        ");
+                message.append(indentation);
                 message.append(counter).append(".");
                 message.append(task);
                 message.append("\n");
@@ -205,9 +209,9 @@ public class Ui {
      *
      * @param errorMessage String representing the error message.
      */
-    public static void printError(String errorMessage) {
-        System.out.println("        ____________________________________________________________");
-        System.out.println("        " + errorMessage);
-        System.out.println("        ____________________________________________________________");
+    public static String printError(String errorMessage) {
+        return dashedLines +
+                indentation + errorMessage + "\n" +
+                dashedLines;
     }
 }
