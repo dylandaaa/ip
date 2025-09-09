@@ -34,6 +34,7 @@ public class Ui {
                 switch (commandType) {
                 case BYE -> {
                     System.out.println(Ui.byeMessage());
+                    break;
                 }
                 case LIST -> {
                     System.out.println(Ui.listMessage(taskList));
