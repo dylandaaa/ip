@@ -140,6 +140,7 @@ public class Storage {
         String[] parts = input.split("\\|");
         String description = parts[2];
         String type = parts[0];
+
         boolean isDone = Objects.equals(parts[1], "1");
 
         switch (type) {
@@ -150,6 +151,7 @@ public class Storage {
             }
             return todo;
         case "D":
+            assert(parts.length == 4);
             String date = parts[3];
             Task deadline = new Deadline(description, date);
             if (isDone) {
@@ -157,6 +159,7 @@ public class Storage {
             }
             return deadline;
         case "E":
+            assert(parts.length == 5);
             String from = parts[3];
             String until = parts[4];
             Task event = new Event(description, from, until);

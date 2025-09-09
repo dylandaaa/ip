@@ -193,7 +193,8 @@ public class Ui {
         } else {
             for (Task task : tasks) {
                 message.append(indentation);
-                message.append(counter).append(".");
+                message.append(counter);
+                message.append(".");
                 message.append(task);
                 message.append("\n");
                 counter++;
