@@ -1,6 +1,7 @@
 package wheezy.parser;
 
 import wheezy.commandtype.CommandType;
+import wheezy.priority.Priority;
 
 /**
  * Used for manipulating string input. Used when trying to extract the command
@@ -79,7 +80,12 @@ public class Parser {
      * @return Description of the task.
      */
     public static String extractTodoDescription(String input) {
-        return input.substring(TODO_INDEX).trim();
+        String withoutCommand = input.substring(TODO_INDEX).trim();
+        int priorityIndex = withoutCommand.indexOf("/priority ");
+        if (priorityIndex == -1) {
+            return withoutCommand;
+        }
+        return withoutCommand.substring(0, priorityIndex).trim();
     }
 
     /**
@@ -106,10 +112,17 @@ public class Parser {
     public static String extractDeadlineDate(String input) {
         String withoutCommand = input.substring(DEADLINE_INDEX).trim();
         int byIndex = withoutCommand.indexOf("/by ");
+        int priorityIndex = withoutCommand.indexOf("/priority ");
+        
         if (byIndex == -1) {
-            throw new IllegalArgumentException("Deadline format should be: deadline <description> /by <date>");
+            throw new IllegalArgumentException("Deadline format should be: deadline <description> /by <date> [/priority <priority>]");
         }
-        return withoutCommand.substring(byIndex + 4).trim(); // Get everything after "/by "
+
+        if (priorityIndex == -1) {
+            return withoutCommand.substring(byIndex + 4).trim();
+        } else {
+            return withoutCommand.substring(byIndex + 4, priorityIndex).trim();
+        }
     }
 
     /**
@@ -154,12 +167,18 @@ public class Parser {
     public static String extractEventEndTime(String input) {
         String withoutCommand = input.substring(EVENT_INDEX).trim();
         int toIndex = withoutCommand.indexOf("/to ");
+        int priorityIndex = withoutCommand.indexOf("/priority ");
 
         if (toIndex == -1) {
-            throw new IllegalArgumentException("Event format should be: event <description> /from <start> /to <end>");
+            throw new IllegalArgumentException(
+                    "Event format should be: event <description> /from <start> /to <end> [/priority <priority>]");
         }
 
-        return withoutCommand.substring(toIndex + 4).trim();
+        if (priorityIndex == -1) {
+            return withoutCommand.substring(toIndex + 4).trim();
+        } else {
+            return withoutCommand.substring(toIndex + 4, priorityIndex).trim();
+        }
     }
 
     /**
@@ -172,4 +191,29 @@ public class Parser {
         return input.substring(FIND_INDEX).trim();
     }
 
+    /**
+     * Extracts the priority of a task.
+     *
+     * @param input String representing the user input containing a priority.
+     * @return Priority of a task.
+     */
+    public static Priority extractPriority(String input) {
+        int priorityIndex = input.indexOf("/priority ");
+
+        if (priorityIndex != -1) {
+            String priorityStr = input.substring(priorityIndex + 10).trim().toLowerCase();
+            switch (priorityStr) {
+                case "high":
+                    return Priority.HIGH;
+                case "medium":
+                    return Priority.MEDIUM;
+                case "low":
+                    return Priority.LOW;
+                default:
+                    throw new IllegalArgumentException("Priority must be high, medium, or low");
+            }
+        }
+
+        return null; // No priority specified
+    }
 }

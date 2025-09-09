@@ -1,5 +1,7 @@
 package wheezy.task;
 
+import wheezy.priority.Priority;
+
 /**
  * Represents a todo task. Extends the task class.
  */
@@ -14,6 +16,10 @@ public class Todo extends Task {
         super(input);
     }
 
+    public Todo(String input, Priority priority) {
+        super(input, priority);
+    }
+
     @Override
     public String getType() {
         return "T";
@@ -21,13 +27,9 @@ public class Todo extends Task {
 
     @Override
     public String toFileString() {
-        String isDone;
-        if (this.getDoneStatus()) {
-            isDone = "1";
-        } else {
-            isDone = "0";
-        }
-        return "T|" + isDone + "|" + this.getDescription();
+        String isDone = this.getDoneStatus() ? "1" : "0";
+        String priorityStr = getPriority() != null ? "|" + getPriority().toString() : "";
+        return "T|" + isDone + "|" + this.getDescription() + priorityStr;
     }
 
     @Override

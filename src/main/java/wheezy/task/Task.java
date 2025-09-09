@@ -1,5 +1,7 @@
 package wheezy.task;
 
+import wheezy.priority.Priority;
+
 /**
  * Represents a task to be added. Parent class of Deadline, Event,
  * and Todo.
@@ -10,6 +12,7 @@ package wheezy.task;
 abstract public class Task {
     private String description;
     private boolean isDone = false;
+    private Priority priority;
 
     /**
      * Constructor to help child classes.
@@ -18,6 +21,11 @@ abstract public class Task {
      */
     public Task(String description) {
         this.description = description;
+    }
+
+    public Task(String description, Priority priority) {
+        this.description = description;
+        this.priority = priority;
     }
 
     /**
@@ -41,6 +49,15 @@ abstract public class Task {
      */
     public String getDescription() {
         return this.description;
+    }
+
+    /**
+     * Getter to get the priority of the task.
+     *
+     * @return Priority representing the priority of the task.
+     */
+    public Priority getPriority() {
+        return this.priority;
     }
 
     /**
@@ -69,6 +86,7 @@ abstract public class Task {
     @Override
     public String toString() {
         String status = isDone ? "[X]" : "[ ]";
-        return status + " " + description;
+        String priorityStr = priority != null ? " (Priority: " + priority + ")" : "";
+        return status + " " + description + priorityStr;
     }
 }
