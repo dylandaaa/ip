@@ -9,7 +9,7 @@ import wheezy.commandtype.CommandType;
 import wheezy.parser.Parser;
 import wheezy.task.Task;
 
-/*
+/**
  * Represents the UI that the user will interact with. Everything that
  * displayed to the user is represented as a method in this class.
  */
@@ -34,7 +34,6 @@ public class Ui {
                 switch (commandType) {
                 case BYE -> {
                     System.out.println(Ui.byeMessage());
-                    break;
                 }
                 case LIST -> {
                     System.out.println(Ui.listMessage(taskList));
@@ -122,16 +121,16 @@ public class Ui {
         if (taskList.isEmpty()) {
             message.append(indentation);
             message.append("Your task list is empty! Add some tasks to get started.\n");
-        } else {
-            message.append(indentation);
-            message.append("Here are the tasks in your list:\n");
-            for (int i = 0; i < taskList.size(); i++) {
-                message.append(indentation)
-                        .append((i + 1))
-                        .append(".")
-                        .append(taskList.get(i))
-                        .append("\n");
-            }
+        }
+
+        message.append(indentation);
+        message.append("Here are the tasks in your list:\n");
+        for (int i = 0; i < taskList.size(); i++) {
+            message.append(indentation)
+                    .append((i + 1))
+                    .append(".")
+                    .append(taskList.get(i))
+                    .append("\n");
         }
 
         message.append(dashedLines);
@@ -190,14 +189,13 @@ public class Ui {
 
         if (tasks.isEmpty()) {
             message.append("No tasks found!");
-        } else {
-            for (Task task : tasks) {
-                message.append(indentation);
-                message.append(counter).append(".");
-                message.append(task);
-                message.append("\n");
-                counter++;
-            }
+        }
+        for (Task task : tasks) {
+            message.append(indentation);
+            message.append(counter).append(".");
+            message.append(task);
+            message.append("\n");
+            counter++;
         }
 
         message.append(dashedLines);

@@ -2,7 +2,7 @@ package wheezy.parser;
 
 import wheezy.commandtype.CommandType;
 
-/*
+/**
  * Used for manipulating string input. Used when trying to extract the command
  * type of the user input. Other methods are used to extract important
  * information from the string input such as description, dates, and task
@@ -16,6 +16,12 @@ public class Parser {
      * @param input User input typed from the terminal.
      * @return Command type of the input.
      */
+
+    private static final int DEADLINE_INDEX = 9;
+    private static final int TODO_INDEX = 5;
+    private static final int EVENT_INDEX = 6;
+    private static final int FIND_INDEX = 9;
+
     public static CommandType parseCommand(String input) {
         String command = input.trim().toLowerCase();
 
@@ -60,7 +66,9 @@ public class Parser {
     public static int extractTaskNumber(String input) throws NumberFormatException {
         // taskNumber returns in 0 format
         String[] parts = input.split(" ");
-        if (parts.length != 2) throw new NumberFormatException("Invalid Format");
+        if (parts.length != 2) {
+            throw new NumberFormatException("Invalid Format");
+        }
         return Integer.parseInt(parts[1]) - 1;
     }
 
@@ -71,7 +79,7 @@ public class Parser {
      * @return Description of the task.
      */
     public static String extractTodoDescription(String input) {
-        return input.substring(5).trim();
+        return input.substring(TODO_INDEX).trim();
     }
 
     /**
@@ -81,7 +89,7 @@ public class Parser {
      * @return Description of the task.
      */
     public static String extractDeadlineDescription(String input) {
-        String withoutCommand = input.substring(9).trim();
+        String withoutCommand = input.substring(DEADLINE_INDEX).trim();
         int byIndex = withoutCommand.indexOf("/by ");
         if (byIndex == -1) {
             throw new IllegalArgumentException("Deadline format should be: deadline <description> /by <date>");
@@ -96,7 +104,7 @@ public class Parser {
      * @return Deadline of the task.
      */
     public static String extractDeadlineDate(String input) {
-        String withoutCommand = input.substring(9).trim();
+        String withoutCommand = input.substring(DEADLINE_INDEX).trim();
         int byIndex = withoutCommand.indexOf("/by ");
         if (byIndex == -1) {
             throw new IllegalArgumentException("Deadline format should be: deadline <description> /by <date>");
@@ -111,7 +119,7 @@ public class Parser {
      * @return Description of the event.
      */
     public static String extractEventDescription(String input) {
-        String withoutCommand = input.substring(6).trim();
+        String withoutCommand = input.substring(EVENT_INDEX).trim();
         int fromIndex = withoutCommand.indexOf("/from ");
         if (fromIndex == -1) {
             throw new IllegalArgumentException("Event format should be: event <description> /from <start> /to <end>");
@@ -126,7 +134,7 @@ public class Parser {
      * @return Start time of the event.
      */
     public static String extractEventStartTime(String input) {
-        String withoutCommand = input.substring(6).trim();
+        String withoutCommand = input.substring(EVENT_INDEX).trim();
         int fromIndex = withoutCommand.indexOf("/from ");
         int toIndex = withoutCommand.indexOf("/to ");
 
@@ -144,7 +152,7 @@ public class Parser {
      * @return End time of the event.
      */
     public static String extractEventEndTime(String input) {
-        String withoutCommand = input.substring(6).trim();
+        String withoutCommand = input.substring(EVENT_INDEX).trim();
         int toIndex = withoutCommand.indexOf("/to ");
 
         if (toIndex == -1) {
@@ -161,7 +169,7 @@ public class Parser {
      * @return Task description to be searched.
      */
     public static String extractFindDescription(String input) {
-        return input.substring(5).trim();
+        return input.substring(FIND_INDEX).trim();
     }
 
 }

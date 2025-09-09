@@ -1,6 +1,6 @@
 package wheezy.task;
 
-/*
+/**
  * Represents a todo task. Extends the task class.
  */
 public class Todo extends Task {
