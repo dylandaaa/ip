@@ -3,7 +3,7 @@ package wheezy.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/*
+/**
  * Represents a deadline task. Extends the Task class. A deadline contains
  * a description and a deadline date in LocalDate format.
  */
@@ -48,6 +48,7 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return "[D]" + super.toString() + " (by: " +
+                this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }

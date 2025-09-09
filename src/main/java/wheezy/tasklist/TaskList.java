@@ -11,7 +11,7 @@ import wheezy.task.Event;
 import wheezy.task.Todo;
 import wheezy.task.Deadline;
 
-/*
+/**
  * Represents a list of tasks as an ArrayList<Task>.
  * Contains methods that are relevant to manipulating the
  * tasks inside the task list itself.

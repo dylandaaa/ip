@@ -1,6 +1,6 @@
 package wheezy.task;
 
-/*
+/**
  * Represents a task to be added. Parent class of Deadline, Event,
  * and Todo.
  * A task contains a String as a description and a boolean

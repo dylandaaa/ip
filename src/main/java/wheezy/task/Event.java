@@ -3,7 +3,7 @@ package wheezy.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/*
+/**
  * Represents an event task. Extends the Task class. An event contains
  * a description and a "from" date and a "to" date in LocalDate format.
  */

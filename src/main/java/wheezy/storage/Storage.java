@@ -18,7 +18,7 @@ import wheezy.task.Deadline;
 import wheezy.task.Event;
 import wheezy.task.Todo;
 
-/*
+/**
  * Used to handle things related to file I/O. Used to parse string input
  * in the storage format to tasks.
  */
