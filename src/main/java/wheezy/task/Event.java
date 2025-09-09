@@ -3,6 +3,8 @@ package wheezy.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import wheezy.priority.Priority;
+
 /**
  * Represents an event task. Extends the Task class. An event contains
  * a description and a "from" date and a "to" date in LocalDate format.
@@ -20,6 +22,12 @@ public class Event extends Task {
      */
     public Event(String input, String from, String until) {
         super(input);
+        this.from = LocalDate.parse(from);
+        this.until = LocalDate.parse(until);
+    }
+
+    public Event(String input, String from, String until, Priority priority) {
+        super(input, priority);
         this.from = LocalDate.parse(from);
         this.until = LocalDate.parse(until);
     }
@@ -49,17 +57,18 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        String isDone;
-        if (this.getDoneStatus()) {
-            isDone = "1";
-        } else {
-            isDone = "0";
-        }
-        return "E|" + isDone + "|" + this.getDescription() + "|" + this.from + "|" + this.until;
+        String isDone = this.getDoneStatus() ? "1" : "0";
+        String priorityStr = getPriority() != null ? "|" + getPriority().toString() : "";
+        return "E|" + isDone + "|" + this.getDescription() + "|" + this.from + "|" + this.until + priorityStr;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " to: " + this.until.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        String status = getDoneStatus() ? "[X]" : "[ ]";
+        String priorityStr = getPriority() != null ? " (Priority: " + getPriority() + ")" : "";
+        return "[E]" + status + " " + getDescription() + 
+               " (from: " + this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + 
+               " to: " + this.until.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")" +
+               priorityStr;
     }
 }

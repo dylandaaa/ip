@@ -3,6 +3,8 @@ package wheezy.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import wheezy.priority.Priority;
+
 /**
  * Represents a deadline task. Extends the Task class. A deadline contains
  * a description and a deadline date in LocalDate format.
@@ -21,6 +23,12 @@ public class Deadline extends Task {
         this.deadline = LocalDate.parse(deadline);
     }
 
+    public Deadline(String input, String deadline, Priority priority) {
+        super(input, priority);
+        this.deadline = LocalDate.parse(deadline);
+
+    }
+
     /**
      * Getter to get the deadline.
      *
@@ -37,18 +45,17 @@ public class Deadline extends Task {
 
     @Override
     public String toFileString() {
-        String isDone;
-        if (this.getDoneStatus()) {
-            isDone = "1";
-        } else {
-            isDone = "0";
-        }
-        return "D|" + isDone + "|" + this.getDescription() + "|" + this.deadline;
+        String isDone = this.getDoneStatus() ? "1" : "0";
+        String priorityStr = getPriority() != null ? "|" + getPriority().toString() : "";
+        return "D|" + isDone + "|" + this.getDescription() + "|" + this.deadline + priorityStr;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " +
-                this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        String status = getDoneStatus() ? "[X]" : "[ ]";
+        String priorityStr = getPriority() != null ? " (Priority: " + getPriority() + ")" : "";
+        return "[D]" + status + " " + getDescription() + 
+               " (by: " + this.deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")" +
+               priorityStr;
     }
 }

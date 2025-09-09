@@ -17,6 +17,7 @@ import wheezy.task.Task;
 import wheezy.task.Deadline;
 import wheezy.task.Event;
 import wheezy.task.Todo;
+import wheezy.priority.Priority;
 
 /**
  * Used to handle things related to file I/O. Used to parse string input
@@ -43,13 +44,12 @@ public class Storage {
      */
     public static TaskList loadContent(TaskList taskList) throws FileNotFoundException {
         File f = new File("data/wheezy.txt");
-        Scanner scanner = new Scanner(f);
-
-        while (scanner.hasNext()) {
-            Task newTask = fileContentParser(scanner.nextLine());
-            taskList.add(newTask);
+        try (Scanner scanner = new Scanner(f)) {
+            while (scanner.hasNext()) {
+                Task newTask = fileContentParser(scanner.nextLine());
+                taskList.add(newTask);
+            }
         }
-
         return taskList;
     }
 
@@ -140,35 +140,48 @@ public class Storage {
         String[] parts = input.split("\\|");
         String description = parts[2];
         String type = parts[0];
-
         boolean isDone = Objects.equals(parts[1], "1");
+        Priority priority = null;
 
+        // Check if the last part is a priority
+        if (parts.length > 0) {
+            String lastPart = parts[parts.length - 1].toLowerCase();
+            if (lastPart.equals("high") || lastPart.equals("medium") || lastPart.equals("low")) {
+                switch (lastPart) {
+                    case "high":
+                        priority = Priority.HIGH;
+                        break;
+                    case "medium":
+                        priority = Priority.MEDIUM;
+                        break;
+                    case "low":
+                        priority = Priority.LOW;
+                        break;
+                }
+            }
+        }
+
+        Task task;
         switch (type) {
         case "T":
-            Task todo = new Todo(description);
-            if (isDone) {
-                todo.markDone();
-            }
-            return todo;
+            task = priority != null ? new Todo(description, priority) : new Todo(description);
+            break;
         case "D":
-            assert(parts.length == 4);
             String date = parts[3];
-            Task deadline = new Deadline(description, date);
-            if (isDone) {
-                deadline.markDone();
-            }
-            return deadline;
+            task = priority != null ? new Deadline(description, date, priority) : new Deadline(description, date);
+            break;
         case "E":
-            assert(parts.length == 5);
             String from = parts[3];
-            String until = parts[4];
-            Task event = new Event(description, from, until);
-            if (isDone) {
-                event.markDone();
-            }
-            return event;
+            String until = priority != null ? parts[4] : parts[4];  // If there's priority, it's in parts[5]
+            task = priority != null ? new Event(description, from, until, priority) : new Event(description, from, until);
+            break;
         default:
-            return new Todo(description);
+            task = new Todo(description);
         }
+
+        if (isDone) {
+            task.markDone();
+        }
+        return task;
     }
 }

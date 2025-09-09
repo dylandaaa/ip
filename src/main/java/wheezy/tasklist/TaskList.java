@@ -10,6 +10,7 @@ import wheezy.ui.Ui;
 import wheezy.task.Event;
 import wheezy.task.Todo;
 import wheezy.task.Deadline;
+import wheezy.priority.Priority;
 
 /**
  * Represents a list of tasks as an ArrayList<Task>.
@@ -73,7 +74,7 @@ public class TaskList {
      * Marks, saves into storage file, and prints a message when the user inputs
      * a mark/unmark command. Handles relevant exceptions.
      *
-     * @param input String representing the raw user input.
+     * @param input      String representing the raw user input.
      * @param markAsDone Boolean representing whether the user wants to mark/unmark.
      * @return The string output from Wheezy.
      */
@@ -171,7 +172,8 @@ public class TaskList {
     }
 
     /**
-     * Adds Todo tasks to the TaskList and to the storage file. Handles relevant exceptions.
+     * Adds Todo tasks to the TaskList and to the storage file. Handles relevant
+     * exceptions.
      *
      * @param input String representing the raw user input.
      * @return The string output from Wheezy
@@ -183,7 +185,11 @@ public class TaskList {
                 return Ui.printError("Todo description cannot be empty! Usage: todo <description>");
             }
 
-            Task newTask = new Todo(description);
+            Priority priority = Parser.extractPriority(input);
+
+            Task newTask = priority != null
+                    ? new Todo(description, priority)
+                    : new Todo(description);
             this.taskList.add(newTask);
             try {
                 Storage.fileAdd(newTask);
@@ -197,7 +203,8 @@ public class TaskList {
     }
 
     /**
-     * Adds Deadline tasks to the TaskList and to the storage file. Handles relevant exceptions.
+     * Adds Deadline tasks to the TaskList and to the storage file. Handles relevant
+     * exceptions.
      *
      * @param input String representing the raw user input.
      * @return The string output from Wheezy
@@ -206,17 +213,21 @@ public class TaskList {
         try {
             String description = Parser.extractDeadlineDescription(input);
             String deadline = Parser.extractDeadlineDate(input);
+            Priority priority = Parser.extractPriority(input);
 
             if (description.trim().isEmpty()) {
                 return Ui.printError("Deadline description cannot be empty! " +
-                        "Usage: deadline <description> /by <date>");
+                        "Usage: deadline <description> /by <date> [/priority <priority>]");
             }
             if (deadline.trim().isEmpty()) {
                 return Ui.printError("Deadline date cannot be empty! " +
-                        "Usage: deadline <description> /by <date>");
+                        "Usage: deadline <description> /by <date> [/priority <priority>]");
             }
 
-            Task newTask = new Deadline(description, deadline);
+            Task newTask = priority != null
+                    ? new Deadline(description, deadline, priority)
+                    : new Deadline(description, deadline);
+                    
             this.taskList.add(newTask);
             try {
                 Storage.fileAdd(newTask);
@@ -228,15 +239,16 @@ public class TaskList {
 
         } catch (IllegalArgumentException e) {
             return Ui.printError("Invalid deadline format! " +
-                    "Usage: deadline <description> /by <date>");
+                    "Usage: deadline <description> /by <date> [/priority <priority>]");
         } catch (StringIndexOutOfBoundsException e) {
             return Ui.printError("Deadline command is incomplete! " +
-                    "Usage: deadline <description> /by <date>");
+                    "Usage: deadline <description> /by <date> [/priority <priority>]");
         }
     }
 
     /**
-     * Adds Event tasks to the TaskList and to the storage file. Handles relevant exceptions.
+     * Adds Event tasks to the TaskList and to the storage file. Handles relevant
+     * exceptions.
      *
      * @param input String representing the raw user input.
      * @return The string output from Wheezy
@@ -246,21 +258,25 @@ public class TaskList {
             String description = Parser.extractEventDescription(input);
             String from = Parser.extractEventStartTime(input);
             String until = Parser.extractEventEndTime(input);
+            Priority priority = Parser.extractPriority(input);
 
             if (description.trim().isEmpty()) {
                 return Ui.printError("Event description cannot be empty! " +
-                        "Usage: event <description> /from <start> /to <end>");
+                        "Usage: event <description> /from <start> /to <end> [/priority <priority>]");
             }
             if (from.trim().isEmpty()) {
                 return Ui.printError("Event start time cannot be empty! " +
-                        "Usage: event <description> /from <start> /to <end>");
+                        "Usage: event <description> /from <start> /to <end> [/priority <priority>]");
             }
             if (until.trim().isEmpty()) {
                 return Ui.printError("Event end time cannot be empty! " +
-                        "Usage: event <description> /from <start> /to <end>");
+                        "Usage: event <description> /from <start> /to <end> [/priority <priority>]");
             }
 
-            Task newTask = new Event(description, from, until);
+            Task newTask = priority != null
+                    ? new Event(description, from, until, priority)
+                    : new Event(description, from, until);
+
             this.taskList.add(newTask);
             try {
                 Storage.fileAdd(newTask);
