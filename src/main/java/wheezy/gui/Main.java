@@ -24,6 +24,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("Wheezy");
             fxmlLoader.<MainWindow>getController().setWheezy(wheezy);  // inject the Wheezy instance
             stage.show();
         } catch (IOException e) {
@@ -31,5 +32,3 @@ public class Main extends Application {
         }
     }
 }
-
-
