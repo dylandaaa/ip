@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import wheezy.tasklist.TaskList;
-import wheezy.commandtype.CommandType;
+import wheezy.command.Command;
 import wheezy.parser.Parser;
 import wheezy.task.Task;
 
@@ -15,8 +15,8 @@ import wheezy.task.Task;
  */
 public class Ui {
     private static Scanner scanner = new Scanner(System.in);
-    private static final String dashedLines = "        __________________________________________________________\n";
-    private static final String indentation = "        ";
+    private static final String dashedLines = "________________________________________________________\n";
+    private static final String indentation = "";
 
     /**
      * Starts a loop that constantly asks for user input unless user types "bye".
@@ -29,48 +29,12 @@ public class Ui {
         while (true) {
             try {
                 String input = scanner.nextLine();
-                CommandType commandType = Parser.parseCommand(input);
+                Command command = Parser.parseCommand(input);
 
-                switch (commandType) {
-                case BYE -> {
-                    System.out.println(Ui.byeMessage());
-                    break;
-                }
-                case LIST -> {
-                    System.out.println(Ui.listMessage(taskList));
-                }
-                case MARK -> {
-                    System.out.println(taskList.handleMark(input, true));
-                }
-                case UNMARK -> {
-                    System.out.println(taskList.handleMark(input, false));
-                }
-                case DELETE -> {
-                    System.out.println(taskList.handleDelete(input));
-                }
-                case ADD_TASK -> {
-                    System.out.println(taskList.handleAdd(input));
-                }
-                case TODO -> {
-                    System.out.println(taskList.handleTodoWithErrorCheck(input));
-                }
-                case DEADLINE -> {
-                    System.out.println(taskList.handleDeadlineWithErrorCheck(input));
-                }
-                case EVENT -> {
-                    System.out.println(taskList.handleEventWithErrorCheck(input));
-                }
-                case FIND -> {
-                    System.out.println(taskList.handleFindWithErrorCheck(input));
-                }
-                case INVALID -> {
-                    System.out.println(Ui.printError("I don't understand that command. " +
-                            "Try 'list', 'todo <description>', 'delete <number>', or 'bye'."));
-                }
-                }
+                String output = command.execute(taskList);
+                System.out.println(output);
 
-
-                if (commandType == CommandType.BYE) {
+                if (command.isExit()) {
                     break;
                 }
             } catch (DateTimeParseException dtpe) {
@@ -89,7 +53,7 @@ public class Ui {
         String logo = """
                          __      __..__                                 \s
                         /  \\    /  \\  |__   ____   ____ __________.__.
-                        \\   \\/\\/   /  |  \\_/ __ \\_/ __ \\\\____ |   |  |
+                        \\   \\//\\/   /  |  \\_/ __ \\_/ __ \\\\____ |   |  |
                          \\        /|   Y  \\  ___/\\  ___/ /    /\\___  |
                           \\__/\\__/ |___|__/\\____/ \\____/ |____| /____|
                 """;
@@ -105,7 +69,7 @@ public class Ui {
      * @return String representing the bye message.
      */
     public static String byeMessage() {
-        return dashedLines + indentation + "see you around!\n" + dashedLines;
+        return dashedLines + indentation + "See you around!\n" + dashedLines;
     }
 
     /**

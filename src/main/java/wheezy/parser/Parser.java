@@ -1,6 +1,15 @@
 package wheezy.parser;
 
-import wheezy.commandtype.CommandType;
+import wheezy.command.ByeCommand;
+import wheezy.command.Command;
+import wheezy.command.DeadlineCommand;
+import wheezy.command.DeleteCommand;
+import wheezy.command.EventCommand;
+import wheezy.command.FindCommand;
+import wheezy.command.InvalidCommand;
+import wheezy.command.ListCommand;
+import wheezy.command.MarkCommand;
+import wheezy.command.TodoCommand;
 import wheezy.priority.Priority;
 
 /**
@@ -11,11 +20,11 @@ import wheezy.priority.Priority;
  */
 public class Parser {
     /**
-     * Returns command type of user input.
-     * If the input is invalid, returns an invalid command type.
+     * Returns a Command instance corresponding to the input.
+     * If the input is invalid, returns an InvalidCommand.
      *
      * @param input User input typed from the terminal.
-     * @return Command type of the input.
+     * @return Command representing the action to perform.
      */
 
     private static final int DEADLINE_INDEX = 9;
@@ -23,38 +32,38 @@ public class Parser {
     private static final int EVENT_INDEX = 6;
     private static final int FIND_INDEX = 9;
 
-    public static CommandType parseCommand(String input) {
+    public static Command parseCommand(String input) {
         String command = input.trim().toLowerCase();
 
         if (command.equals("bye")) {
-            return CommandType.BYE;
+            return new ByeCommand();
         }
         if (command.equals("list")) {
-            return CommandType.LIST;
+            return new ListCommand();
         }
         if (command.startsWith("mark ")) {
-            return CommandType.MARK;
+            return new MarkCommand(input, true);
         }
         if (command.startsWith("unmark ")) {
-            return CommandType.UNMARK;
+            return new MarkCommand(input, false);
         }
         if (command.startsWith("todo ")) {
-            return CommandType.TODO;
+            return new TodoCommand(input);
         }
         if (command.startsWith("event ")) {
-            return CommandType.EVENT;
+            return new EventCommand(input);
         }
         if (command.startsWith("deadline ")) {
-            return CommandType.DEADLINE;
+            return new DeadlineCommand(input);
         }
         if (command.startsWith("delete ")) {
-            return CommandType.DELETE;
+            return new DeleteCommand(input);
         }
         if (command.startsWith("find ")) {
-            return CommandType.FIND;
+            return new FindCommand(input);
         }
 
-        return CommandType.INVALID;
+        return new InvalidCommand();
     }
 
     /**
