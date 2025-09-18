@@ -16,6 +16,12 @@ public class Todo extends Task {
         super(input);
     }
 
+    /**
+     * Constructor to create a Todo task with a priority.
+     *
+     * @param input String representing the description of the todo task.
+     * @param priority Priority level of the task.
+     */
     public Todo(String input, Priority priority) {
         super(input, priority);
     }

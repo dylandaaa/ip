@@ -23,6 +23,12 @@ abstract public class Task {
         this.description = description;
     }
 
+    /**
+     * Constructor to help child classes with a priority value.
+     *
+     * @param description String representing the description of the task.
+     * @param priority Priority level of the task.
+     */
     public Task(String description, Priority priority) {
         this.description = description;
         this.priority = priority;

@@ -32,6 +32,13 @@ public class Parser {
     private static final int EVENT_INDEX = 6;
     private static final int FIND_INDEX = 9;
 
+    /**
+     * Parses a user input string and constructs the corresponding Command.
+     * Returns an InvalidCommand if the input does not match any known command.
+     *
+     * @param input Raw user input string.
+     * @return Command to be executed based on the input.
+     */
     public static Command parseCommand(String input) {
         String command = input.trim().toLowerCase();
 

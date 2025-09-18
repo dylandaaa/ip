@@ -26,6 +26,14 @@ public class Event extends Task {
         this.until = LocalDate.parse(until);
     }
 
+    /**
+     * Constructor to create an event task with a priority.
+     *
+     * @param input String representing the description of the event.
+     * @param from String representing the "from" date.
+     * @param until String representing the "to" date.
+     * @param priority Priority level of the task.
+     */
     public Event(String input, String from, String until, Priority priority) {
         super(input, priority);
         this.from = LocalDate.parse(from);

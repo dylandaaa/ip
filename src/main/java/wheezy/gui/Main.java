@@ -17,6 +17,11 @@ public class Main extends Application {
 
     private Wheezy wheezy = new Wheezy();
 
+    /**
+     * Initializes and shows the primary stage for the Wheezy GUI.
+     *
+     * @param stage Primary stage provided by the JavaFX runtime.
+     */
     @Override
     public void start(Stage stage) {
         try {

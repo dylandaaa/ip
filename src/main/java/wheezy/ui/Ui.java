@@ -147,6 +147,12 @@ public class Ui {
                 dashedLines;
     }
 
+    /**
+     * Helper function that displays the results of a find command.
+     *
+     * @param tasks ArrayList of tasks that match the search criteria.
+     * @return String representing the formatted search results.
+     */
     public static String findMessage(ArrayList<Task> tasks) {
         StringBuilder message = new StringBuilder();
         message.append(dashedLines);
@@ -171,6 +177,7 @@ public class Ui {
      * Helper function that displays an error message.
      *
      * @param errorMessage String representing the error message.
+     * @return String representing the formatted error message.
      */
     public static String printError(String errorMessage) {
         return dashedLines +

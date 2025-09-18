@@ -23,6 +23,13 @@ public class Deadline extends Task {
         this.deadline = LocalDate.parse(deadline);
     }
 
+    /**
+     * Constructor to create a deadline task with a priority.
+     *
+     * @param input String representing the description of the deadline.
+     * @param deadline String representing the date of the deadline.
+     * @param priority Priority level of the task.
+     */
     public Deadline(String input, String deadline, Priority priority) {
         super(input, priority);
         this.deadline = LocalDate.parse(deadline);
