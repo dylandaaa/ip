@@ -86,16 +86,16 @@ public class Ui {
         if (taskList.isEmpty()) {
             message.append(indentation);
             message.append("Your task list is empty! Add some tasks to get started.\n");
-        }
-
-        message.append(indentation);
-        message.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < taskList.size(); i++) {
-            message.append(indentation)
-                    .append((i + 1))
-                    .append(".")
-                    .append(taskList.get(i))
-                    .append("\n");
+        } else {
+            message.append(indentation);
+            message.append("Here are the tasks in your list:\n");
+            for (int i = 0; i < taskList.size(); i++) {
+                message.append(indentation)
+                        .append((i + 1))
+                        .append(".")
+                        .append(taskList.get(i))
+                        .append("\n");
+            }
         }
 
         message.append(dashedLines);
