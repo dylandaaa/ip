@@ -2,3 +2,4 @@ T|1|read book
 D|0|2109s ps1|2025-08-25
 D|0|2103 wk3 ip|2025-08-30
 T|1|do work|high
+T|0|laundry

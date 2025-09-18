@@ -33,8 +33,6 @@ Note: Wheezy’s task-related commands use natural text (no prefixes) and suppor
   - Deletes a task. Example: `delete 3`.
 - `find KEYWORDS`
   - Finds tasks containing the keywords. Example: `find book` or `find project report`.
-- `help`
-  - Shows a concise help message.
 - `bye` (or `exit`)
   - Exits Wheezy.
 
